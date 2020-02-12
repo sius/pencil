@@ -36,9 +36,9 @@ private PasswordEncoder passwordEncoder;
 
 ```
 
-## Base64 encoding options on constructing a PasswordEncoder
+## Additional Base64 encoding options on PasswordEncoder construction
 
 - Register a custom encoding identifier {SSHA512}, {SSHA-512} ...
 - Use a custom salt byte array size (with a minimum of 8 bytes)
-- Create an url and file safe base64 encoding
+- Create an url and file safe base64 password encoding
 - Drop trailing base64 padding ('=')
