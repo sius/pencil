@@ -11,7 +11,7 @@ for the following password encoder identifiers and aliases:
 - SSHA384, SSHA-384
 - SHAA512, SSHA-512
 
-The default PasswordEncoder for encoding is `BCryptPasswordEncoder`, 
+The default PasswordEncoder for encoding is always `BCryptPasswordEncoder`, 
 while a password matching challenge against the encoded password tries to retrieve 
 a suitable PasswordEncoder identified by it's leading identifier, e.g.: `{SSHA256}`, `{bcrypt}` etc.
 
@@ -36,9 +36,9 @@ private PasswordEncoder passwordEncoder;
 
 ```
 
-## Additional Base64 encoding options on PasswordEncoder construction
+## Additional encoding options on direct PasswordEncoder construction
 
-- Register a custom encoding identifier {SSHA512}, {SSHA-512} ...
-- Use a custom salt byte array size (with a minimum of 8 bytes)
+- Encode with a custom encoding identifier {SSHA512}, {SSHA-512} ...
+- Encode with a custom salt byte array size (with a minimum of 8 bytes)
 - Create an url and file safe base64 password encoding
 - Drop trailing base64 padding ('=')
