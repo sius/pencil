@@ -11,7 +11,13 @@ for the following password encoder identifiers and aliases:
 - SSHA384, SSHA-384
 - SHAA512, SSHA-512
 
+The default PasswordEncoder for encoding is `BCryptPasswordEncoder`, 
+while a password matching challenge against the encoded password tries to retrieve 
+a suitable PasswordEncoder identified by it's leading identifier, e.g.: `{SSHA256}`, `{bcrypt}` etc.
+
 ## Usage
+
+Add dependency and inject PasswordEncoder Bean.
 
 ```xml
 <dependency>
