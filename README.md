@@ -1,7 +1,8 @@
-# Password Encoder Auto Configuration
+# Password verification support for LDAP encoded passwords
 
 The auto configuration library provides a custom DelegationPasswordEncoder Bean 
 for the following password encoder identifiers and aliases:
+
 - bcrypt (`org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder`)
 - scrypt (`org.springframework.security.crypto.scrypt.SCryptPasswordEncoder`)
 - pbkdf2 (`org.springframework.security.crypto.password.Pbkdf2PasswordEncoder`)
@@ -13,7 +14,7 @@ for the following password encoder identifiers and aliases:
 
 The default PasswordEncoder for encoding is always `BCryptPasswordEncoder`, 
 while a password matching challenge against the encoded password tries to retrieve 
-a suitable PasswordEncoder identified by it's leading identifier, e.g.: `{SSHA256}`, `{bcrypt}` etc.
+a suitable PasswordEncoder identified by it's leading identifier, e.g.: `{SSHA512}`, `{bcrypt}` etc.
 
 ## Usage
 
