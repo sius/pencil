@@ -5,7 +5,7 @@ for the following password encoder identifiers and aliases:
 - bcrypt (`org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder`)
 - scrypt (`org.springframework.security.crypto.scrypt.SCryptPasswordEncoder`)
 - pbkdf2 (`org.springframework.security.crypto.password.Pbkdf2PasswordEncoder`)
-- ldap, SSHA, SSHA1, SSHA-1 (LdapShaPasswordEncoder compatible implementation)
+- ldap, SSHA, SSHA1, SSHA-1 (`LdapShaPasswordEncoder` compatible implementation of the Salted Secure Hash Algorithm)
 - SSHA224, SSHA-224
 - SSHA256, SSHA-256
 - SSHA384, SSHA-384
@@ -35,3 +35,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 private PasswordEncoder passwordEncoder;
 
 ```
+
+## Base64 encoding options on constructing a PasswordEncoder
+
+- Register a custom encoding identifier {SSHA512}, {SSHA-512} ...
+- Use a custom salt byte array size (with a minimum of 8 bytes)
+- Create an url and file safe base64 encoding
+- Drop trailing base64 padding ('=')
