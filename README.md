@@ -10,3 +10,22 @@ for the following password encoder identifiers and aliases:
 - SSHA256, SSHA-256
 - SSHA384, SSHA-384
 - SHAA512, SSHA-512
+
+## Usage
+
+```xml
+<dependency>
+  <groupId>io.liquer.spring.security</groupId>
+  <artifactId>pencil</artifactId>
+  <version>1.0-SNAPSHOT</version>
+</dependency>
+```
+
+```java
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+@Autowired
+private PasswordEncoder passwordEncoder;
+
+```
