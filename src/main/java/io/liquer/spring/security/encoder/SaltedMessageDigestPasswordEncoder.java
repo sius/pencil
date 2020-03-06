@@ -3,6 +3,7 @@ package io.liquer.spring.security.encoder;
 import io.liquer.spring.security.support.Base64Support;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.nio.CharBuffer;
@@ -13,6 +14,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Set;
 
+/**
+ * @author sius
+ */
 abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
 
     private static Logger LOG = LoggerFactory.getLogger(SaltedMessageDigestPasswordEncoder.class);
@@ -125,7 +129,7 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
 
     /**
      *
-     * @param rawPassword
+     * @param rawPassword plain text password
      * @return identifier + b64(concat(sha(rawPassword, salt), salt))
      */
     @Override

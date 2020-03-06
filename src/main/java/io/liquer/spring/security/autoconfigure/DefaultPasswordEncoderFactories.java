@@ -1,13 +1,6 @@
 package io.liquer.spring.security.autoconfigure;
 
-import io.liquer.spring.security.encoder.SSHA224PasswordEncoder;
-import io.liquer.spring.security.encoder.SSHA256PasswordEncoder;
-import io.liquer.spring.security.encoder.SSHA384PasswordEncoder;
-import io.liquer.spring.security.encoder.SSHA512PasswordEncoder;
-import io.liquer.spring.security.encoder.SSHAPasswordEncoder;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import io.liquer.spring.security.encoder.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +10,9 @@ import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author sius
+ */
 public class DefaultPasswordEncoderFactories {
 
     /**

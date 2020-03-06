@@ -9,6 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * @author sius
+ */
 public class AutoConfigurationWithConditionalPropertyTest {
 
     private final ApplicationContextRunner contextRunner =

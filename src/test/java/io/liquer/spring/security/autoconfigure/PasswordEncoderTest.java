@@ -9,6 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static io.liquer.spring.security.encoder.TestHelper.log;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * @author sius
+ */
 public class PasswordEncoderTest {
 
     @ParameterizedTest(name = "{0} encoded password should start with identifier {1}")

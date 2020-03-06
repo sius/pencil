@@ -3,6 +3,9 @@ package io.liquer.spring.security.encoder;
 import java.util.Arrays;
 import java.util.HashSet;
 
+/**
+ * @author sius
+ */
 public final class SSHA224PasswordEncoder extends SaltedMessageDigestPasswordEncoder {
 
     /**

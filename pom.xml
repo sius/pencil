@@ -22,8 +22,6 @@
     </license>
   </licenses>
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -31,7 +29,6 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <junit.jupiter.version>5.5.2</junit.jupiter.version>
     <junit.platform.launcher>1.5.2</junit.platform.launcher>
-    <jmh.version>1.22</jmh.version>
   </properties>
 
   <dependencies>
@@ -76,17 +73,6 @@
       <artifactId>junit-jupiter</artifactId>
       <version>${junit.jupiter.version}</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.openjdk.jmh</groupId>
-      <artifactId>jmh-core</artifactId>
-      <version>${jmh.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjdk.jmh</groupId>
-      <artifactId>jmh-generator-annprocess</artifactId>
-      <version>${jmh.version}</version>
-      <scope>provided</scope>
     </dependency>
   </dependencies>
 </project>

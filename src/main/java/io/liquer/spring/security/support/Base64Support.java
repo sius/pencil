@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 /**
  * RFC 4648
+ *
+ * @author sius
  */
 public final class Base64Support {
 
@@ -113,10 +115,10 @@ public final class Base64Support {
 
     /**
      *
-     * @param val
-     * @param ufsSafe
-     * @param noPadding
-     * @return
+     * @param val a byte array to encode
+     * @param ufsSafe exclude padding if true
+     * @param noPadding exclude padding if true
+     * @return the bas64 encoded bytes
      */
     public static String base64Encode(byte[] val, boolean ufsSafe, boolean noPadding) {
         return base64Encode((ufsSafe ? BASE64UFS_ALPHABET : BASE64_ALPHABET), val, noPadding);
@@ -190,7 +192,7 @@ public final class Base64Support {
     }
     /* returns the Code Point index or throws an InvalidArgumentException if not found */
     private static int b64CpIndexOf(char val, int pos, int rLen) {
-        int i = val;
+        final int i = val;
         if (i == 0x2b || i == 0x2d) {
             return 0x3e;
         }

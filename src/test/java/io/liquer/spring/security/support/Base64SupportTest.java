@@ -1,12 +1,16 @@
 package io.liquer.spring.security.support;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+/**
+ * @author sius
+ */
 public class Base64SupportTest {
 
     @Test
@@ -43,13 +47,23 @@ public class Base64SupportTest {
         assertEquals("Zm9vYmFy", Base64Support.base64UrlEncode("foobar".getBytes()));
     }
 
-    @Test
-    public void base64Decode() {
-        String[] encoded = { "TQ==", "TQ", "TWE=", "TWE", "TWFu", "c3VyZS4=", "c3VyZS4", "ZWFzdXJlLg==", "ZWFzdXJlLg==", "YXN1cmUu", "YW55IGNhcm5hbCBwbGVhc3VyZS4=", "YW55IGNhcm5hbCBwbGVhc3VyZS4" };
-        String[] expected= { "M"   , "M" , "Ma"  , "Ma" , "Man" , "sure."   , "sure."  , "easure."     , "easure."     , "asure."  , "any carnal pleasure."        , "any carnal pleasure." };
-        for (int i = 0; i < encoded.length; i++) {
-            String actual = new String(Base64Support.base64Decode(encoded[i]), StandardCharsets.UTF_8);
-            assertEquals(expected[i], actual);
-        }
+    @ParameterizedTest(name = "base64 encoded value {0} represents decoded value {1}")
+    @CsvSource({
+        "TQ==                         , M                   ",
+        "TQ                           , M                   ",
+        "TWE=                         , Ma                  ",
+        "TWE                          , Ma                  ",
+        "TWFu                         , Man                 ",
+        "c3VyZS4=                     , sure.               ",
+        "c3VyZS4                      , sure.               ",
+        "ZWFzdXJlLg==                 , easure.             ",
+        "ZWFzdXJlLg==                 , easure.             ",
+        "YXN1cmUu                     , asure.              ",
+        "YW55IGNhcm5hbCBwbGVhc3VyZS4= , any carnal pleasure.",
+        "YW55IGNhcm5hbCBwbGVhc3VyZS4  , any carnal pleasure."
+    })
+    public void base64Decode_should_succeed(String encoded, String expected) {
+        final String actual = new String(Base64Support.base64Decode(encoded), StandardCharsets.UTF_8);
+        assertEquals(expected, actual);
     }
 }
