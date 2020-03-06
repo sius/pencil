@@ -10,6 +10,7 @@ import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
  * @author sius
  */
