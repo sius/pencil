@@ -5,6 +5,7 @@ import io.liquer.spring.security.encoder.SSHA256PasswordEncoder;
 import io.liquer.spring.security.encoder.SSHA384PasswordEncoder;
 import io.liquer.spring.security.encoder.SSHA512PasswordEncoder;
 import io.liquer.spring.security.encoder.SSHAPasswordEncoder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,11 +17,10 @@ import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-@Configuration
 public class DefaultPasswordEncoderFactories {
 
     /**
-     * deprecated PasswordEncoders removed
+     * deprecated PasswordEncoders has been removed
      * encoders.put("noop", NoOpPasswordEncoder.getInstance());
      * encoders.put("MD4", new Md4PasswordEncoder());
      * encoders.put("MD5", new MessageDigestPasswordEncoder("MD5"));
@@ -32,8 +32,7 @@ public class DefaultPasswordEncoderFactories {
      *
      * @return the DelegationPasswordEncoder
      */
-    @Bean
-    public static PasswordEncoder passwordEncoder() {
+    static PasswordEncoder passwordEncoder() {
         final String defaultEncodeId = "bcrypt";
         return passwordEncoder(defaultEncodeId);
     }

@@ -1,4 +1,4 @@
-# Password verification support for LDAP encoded passwords
+# Spring PasswordEncoders for LDAP encoded passwords
 
 The auto configuration library provides a custom DelegationPasswordEncoder Bean 
 for the following password encoder identifiers and aliases:
@@ -34,6 +34,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Autowired
 private PasswordEncoder passwordEncoder;
+
+```
+
+The auto-configuration and thus the loading of the provided passwordEncoder Bean 
+can be prevented by setting the environment property `liquer.pencil.enabled` to `false`.
+
+```yaml
+# application.yml
+
+liquer.pencil.enabled: false
 
 ```
 

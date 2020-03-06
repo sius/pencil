@@ -16,7 +16,7 @@ public class AutoConfigurationTest {
             AutoConfigurations.of(PasswordEncoderAutoConfiguration.class));
 
     @Test
-    void passwordEncoderBean() {
+    void pencil_passwordEncoderBean_should_be_loaded() {
         this.contextRunner.withUserConfiguration(MyConfiguration.class).run((context) -> {
             assertThat(context).hasSingleBean(PasswordEncoder.class);
             assertThat(context.getBean(PasswordEncoder.class))
