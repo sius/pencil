@@ -19,7 +19,6 @@ package io.liquer.spring.security.encoder;
 import io.liquer.spring.security.support.Base64Support;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.nio.CharBuffer;

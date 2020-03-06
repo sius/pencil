@@ -1,6 +1,6 @@
-# Additional Spring PasswordEncoders for LDAP encoded passwords
+# Additional Spring-Boot PasswordEncoders for LDAP encoded passwords
 
-The auto configuration library provides a custom DelegationPasswordEncoder Bean 
+The auto-configuration spring-boot library provides a custom DelegationPasswordEncoder Bean 
 for the following password encoder encode Ids and aliases:
 
 - bcrypt (`org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder`)
