@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.liquer.spring.autoconfigure.PasswordEncoderAutoConfiguration
+io.liquer.pencil.autoconfigure.PencilAutoConfiguration

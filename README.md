@@ -1,7 +1,7 @@
-# Additional Spring-Boot PasswordEncoders for LDAP encoded passwords
+# Additional Spring Boot PasswordEncoders for Salted SHA encoded passwords
 
-The auto-configuration spring-boot library provides a custom DelegationPasswordEncoder Bean 
-for the following password encoder encode Ids and aliases:
+The third-party Spring Boot starter library provides a custom DelegationPasswordEncoder Bean 
+for the following PasswordEncoder encode Ids and aliases:
 
 - bcrypt (`org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder`)
 - scrypt (`org.springframework.security.crypto.scrypt.SCryptPasswordEncoder`)
@@ -18,12 +18,12 @@ a suitable PasswordEncoder identified by it's leading identifier, e.g.: `{SSHA51
 
 ## Usage
 
-Add dependency and inject PasswordEncoder Bean.
+Add `pencil-spring-boot-starter`dependency and inject PasswordEncoder Bean.
 
 ```xml
 <dependency>
   <groupId>io.liquer.spring.security</groupId>
-  <artifactId>pencil</artifactId>
+  <artifactId>pencil-spring-boot-starter</artifactId>
   <version>1.0-SNAPSHOT</version>
 </dependency>
 ```

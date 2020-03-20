@@ -4,3 +4,7 @@ jdk:
   - openjdk9
   - openjdk10
   - openjdk11
+
+# mvn clean
+# mvn release:prepare
+# mvn release:perform
