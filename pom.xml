@@ -22,12 +22,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.liquer.pencil</groupId>
-  <artifactId>pencil-aggregator</artifactId>
+  <artifactId>pencil-aggregator-pom</artifactId>
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
 
   <modules>
-    <module>pencil-parent</module>
+    <module>pencil-parent-pom</module>
     <module>pencil-password-encoder</module>
     <module>pencil-spring-boot-autoconfigure</module>
     <module>pencil-spring-boot-starter</module>
