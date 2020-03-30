@@ -51,10 +51,10 @@ public final class SSHA256PasswordEncoder extends SaltedMessageDigestPasswordEnc
    * and base64 encoding options.
    * @param identifier {SSHA256}, {SSHA-256} ...
    * @param saltSize the salt byte array size (with a minimum of 8 bytes)
-   * @param ufsSafe url and file safe encoding if true
+   * @param ufSafe url and file safe encoding if true
    * @param noPadding drop trailing base64 padding ('=') if true
    */
-  public SSHA256PasswordEncoder(String identifier, int saltSize, boolean ufsSafe, boolean noPadding) {
+  public SSHA256PasswordEncoder(String identifier, int saltSize, boolean ufSafe, boolean noPadding) {
     super(
         SHA256_ALGORITHM, SHA256_HASH_SIZE, new HashSet<>(
             Arrays.asList(
@@ -62,6 +62,6 @@ public final class SSHA256PasswordEncoder extends SaltedMessageDigestPasswordEnc
                 SSHA256_LONG_IDENTIFIER,
                 EMPTY_IDENTIFIER
             )),
-            identifier, saltSize, ufsSafe, noPadding);
+            identifier, saltSize, ufSafe, noPadding);
   }
 }

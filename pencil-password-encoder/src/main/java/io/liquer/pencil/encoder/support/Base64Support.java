@@ -16,12 +16,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package io.liquer.pencil.support;
+package io.liquer.pencil.encoder.support;
 
 import java.util.Arrays;
 
 /**
- * Extended RFC 4648 support.
+ * Internal support class with extended RFC 4648 support.
  *
  * @author sius
  */
@@ -117,12 +117,12 @@ public final class Base64Support {
   /**
    * Encodes the byte array.
    * @param val a byte array to encode
-   * @param ufsSafe exclude padding if true
+   * @param ufSafe exclude padding if true
    * @param noPadding exclude padding if true
    * @return the bas64 encoded bytes
    */
-  public static String base64Encode(byte[] val, boolean ufsSafe, boolean noPadding) {
-    return base64Encode((ufsSafe ? BASE64UFS_ALPHABET : BASE64_ALPHABET), val, noPadding);
+  public static String base64Encode(byte[] val, boolean ufSafe, boolean noPadding) {
+    return base64Encode((ufSafe ? BASE64UFS_ALPHABET : BASE64_ALPHABET), val, noPadding);
   }
 
   /**

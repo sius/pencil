@@ -50,10 +50,10 @@ public final class SSHA224PasswordEncoder extends SaltedMessageDigestPasswordEnc
    * and base64 encoding options.
    * @param identifier {SSHA224}, {SSHA-224} ...
    * @param saltSize the salt byte array size (with a minimum of 8 bytes)
-   * @param ufsSafe url and file safe encoding if true
+   * @param ufSafe url and file safe encoding if true
    * @param noPadding drop trailing base64 padding ('=') if true
    */
-  public SSHA224PasswordEncoder(String identifier, int saltSize, boolean ufsSafe, boolean noPadding) {
+  public SSHA224PasswordEncoder(String identifier, int saltSize, boolean ufSafe, boolean noPadding) {
     super(
         SHA224_ALGORITHM, SHA224_HASH_SIZE, new HashSet<>(
             Arrays.asList(
@@ -61,6 +61,6 @@ public final class SSHA224PasswordEncoder extends SaltedMessageDigestPasswordEnc
                 SSHA224_LONG_IDENTIFIER,
                 EMPTY_IDENTIFIER
             )),
-        identifier, saltSize, ufsSafe, noPadding);
+        identifier, saltSize, ufSafe, noPadding);
   }
 }

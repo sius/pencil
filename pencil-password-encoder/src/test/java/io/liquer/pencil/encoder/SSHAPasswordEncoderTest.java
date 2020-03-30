@@ -137,4 +137,19 @@ public class SSHAPasswordEncoderTest {
     assertTrue(ssha.matches(password, ldap.encode(password)));
     assertTrue(ldap.matches(password, ssha.encode(password)));
   }
+
+  @Test
+  void challengeWithEmptyPassword() {
+    final CharSequence rawPassword = "";
+    final SSHAPasswordEncoder encoder = new SSHAPasswordEncoder();
+    final String encoded = encoder.encode(rawPassword);
+    assertTrue(encoder.matches(rawPassword, encoded));
+  }
+
+  @Test
+  void challengeWithNullFails() {
+    final SSHAPasswordEncoder encoder = new SSHAPasswordEncoder();
+    final String encoded = encoder.encode(null);
+    assertFalse(encoder.matches(null, encoded));
+  }
 }

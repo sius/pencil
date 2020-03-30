@@ -123,4 +123,19 @@ public class SSHA384PasswordEncoderTest {
     final String encoded = encoder.encode(rawPassword);
     assertFalse(encoder.matches(rawPassword, encoded));
   }
+
+  @Test
+  void challengeWithEmptyPassword() {
+    final CharSequence rawPassword = "";
+    final SSHA384PasswordEncoder encoder = new SSHA384PasswordEncoder();
+    final String encoded = encoder.encode(rawPassword);
+    assertTrue(encoder.matches(rawPassword, encoded));
+  }
+
+  @Test
+  void challengeWithNullFails() {
+    final SSHA384PasswordEncoder encoder = new SSHA384PasswordEncoder();
+    final String encoded = encoder.encode(null);
+    assertFalse(encoder.matches(null, encoded));
+  }
 }

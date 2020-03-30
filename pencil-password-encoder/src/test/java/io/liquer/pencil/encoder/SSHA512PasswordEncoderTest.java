@@ -126,10 +126,25 @@ public class SSHA512PasswordEncoderTest {
   }
 
   @Test
-  void challengeLdapEncodedPassword_test() {
+  void challengeLdapEncodedPassword() {
     final CharSequence rawPassword = "test";
     final String encodedPassword = "{SSHA512}9Vg3dzYj8vgMdB46KZzsdhHPbTkn8hIo5XHUWofd/Yo8gO73W3MFymVMcAQZx3D0S1fkLj2f1/FWherDLy2qvDAwMmY3YjA2";
     final SSHA512PasswordEncoder encoder = new SSHA512PasswordEncoder();
     assertTrue(encoder.matches(rawPassword, encodedPassword));
+  }
+
+  @Test
+  void challengeWithEmptyPassword() {
+    final CharSequence rawPassword = "";
+    final SSHA512PasswordEncoder encoder = new SSHA512PasswordEncoder();
+    final String encoded = encoder.encode(rawPassword);
+    assertTrue(encoder.matches(rawPassword, encoded));
+  }
+
+  @Test
+  void challengeWithNullFails() {
+    final SSHA512PasswordEncoder encoder = new SSHA512PasswordEncoder();
+    final String encoded = encoder.encode(null);
+    assertFalse(encoder.matches(null, encoded));
   }
 }

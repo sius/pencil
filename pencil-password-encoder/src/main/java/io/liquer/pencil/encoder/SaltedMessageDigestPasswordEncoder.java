@@ -18,9 +18,9 @@
 
 package io.liquer.pencil.encoder;
 
-import io.liquer.pencil.support.Base64Support;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
+import io.liquer.pencil.encoder.support.Base64Support;
+import io.liquer.pencil.encoder.support.EPSplit;
+import io.liquer.pencil.encoder.support.EncoderSupport;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -38,68 +38,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
 
   private static Logger LOG = LoggerFactory.getLogger(SaltedMessageDigestPasswordEncoder.class);
-
-  private static class EPSplit {
-
-    private byte[] salt = null;
-    private byte[] hash = null;
-    private boolean identifierSupported = false;
-    private String identifier = null;
-
-    private EPSplit(
-        String encodedPassword,
-        Set<String> supportedIdentifiers, int hashSize) {
-      if (encodedPassword == null
-          || encodedPassword.isEmpty()
-          || supportedIdentifiers == null
-          || supportedIdentifiers.isEmpty()) {
-        return;
-      }
-
-      final int start = encodedPassword.indexOf('{');
-      final int end = encodedPassword.indexOf('}');
-
-      if (start == 0 && end >= 1) {
-        this.identifier =
-            encodedPassword
-                .substring(start, end + 1)
-                .trim().toUpperCase();
-        this.identifierSupported =
-            supportedIdentifiers.contains(this.identifier);
-      } else {
-        this.identifier = "";
-        this.identifierSupported = ((start + end) != -1);
-      }
-      if (identifierSupported) {
-        final byte[] raw = Base64Support
-            .base64Decode(encodedPassword.substring(end + 1));
-        final int saltSize = raw.length - hashSize;
-        if (saltSize > 0) {
-          hash = new byte[hashSize];
-          salt = new byte[saltSize];
-          System.arraycopy(raw, 0, hash, 0, hashSize);
-          System.arraycopy(raw, hashSize, salt,0, saltSize);
-        }
-      }
-    }
-
-    public String getIdentifier() {
-      return identifier;
-    }
-
-    public boolean isIdentifierSupported() {
-      return identifierSupported;
-    }
-
-    public byte[] getSalt() {
-      byte[] ret = null;
-      if (salt != null) {
-        ret = new byte[salt.length];
-        System.arraycopy(salt, 0, ret, 0, ret.length);
-      }
-      return ret;
-    }
-  }
 
   public static final int DEFAULT_SALT_SIZE = 8;
 
@@ -135,7 +73,7 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
   private final Set<String> supportedIdentifiers;
   private final int hashSize;
   private final int saltSize;
-  private final boolean ufsSafe;
+  private final boolean ufSafe;
   private final boolean noPadding;
 
   protected SaltedMessageDigestPasswordEncoder(
@@ -144,7 +82,7 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
       Set<String> supportedIdentifiers,
       String identifier,
       int saltSize,
-      boolean ufsSafe,
+      boolean ufSafe,
       boolean noPadding) {
 
     this.algorithm = algorithm;
@@ -152,7 +90,7 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
     this.supportedIdentifiers = supportedIdentifiers;
     this.hashSize = hashSize;
     this.saltSize = Math.max(saltSize, 8);
-    this.ufsSafe = ufsSafe;
+    this.ufSafe = ufSafe;
     this.noPadding = noPadding;
   }
 
@@ -164,20 +102,20 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
    */
   @Override
   public String encode(CharSequence rawPassword) {
-    if (isNullOrEmpty(rawPassword)) {
+    if (rawPassword == null) {
       return null;
     }
     final byte [] salt = salt();
-    return identifier + b64(concat(sha(rawPassword, salt), salt));
+    return identifier + b64(EncoderSupport.concat(sha(rawPassword, salt), salt));
   }
 
   @Override
   public boolean matches(CharSequence rawPassword, String encodedPassword) {
     if (rawPassword == null && encodedPassword == null) {
-      return true;
+      return false;
     }
 
-    if (isNullOrEmpty(rawPassword) || isNullOrEmpty(encodedPassword)) {
+    if (EncoderSupport.isNullOrEmpty(encodedPassword)) {
       return false;
     }
 
@@ -187,13 +125,13 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
     }
 
     final byte[] salt = split.getSalt();
-    final String challenge =  split.getIdentifier() + b64(concat(sha(rawPassword, salt), salt));
+    final String challenge =  split.getIdentifier() + b64(EncoderSupport.concat(sha(rawPassword, salt), salt));
 
     return encodedPassword.equals(challenge);
   }
 
   private String b64(byte[] val) {
-    return Base64Support.base64Encode(val, ufsSafe, noPadding);
+    return Base64Support.base64Encode(val, ufSafe, noPadding);
   }
 
   private byte[] sha(CharSequence rawPassword, byte[] salt) {
@@ -201,7 +139,7 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
     if (md == null) {
       return null;
     }
-    md.update(atob(rawPassword, StandardCharsets.UTF_8));
+    md.update(EncoderSupport.atob(rawPassword, StandardCharsets.UTF_8));
     md.update(salt);
     return md.digest();
   }
@@ -223,20 +161,5 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
 
   private SecureRandom rnd() {
     return new SecureRandom();
-  }
-
-  private static byte[] atob(CharSequence seq, Charset charset) {
-    return charset.encode(CharBuffer.wrap(seq)).array();
-  }
-
-  private static byte[] concat(byte[] a, byte[] b) {
-    final byte[] c = new byte[a.length + b.length];
-    System.arraycopy(a, 0, c, 0, a.length);
-    System.arraycopy(b, 0, c, a.length, b.length);
-    return c;
-  }
-
-  private static boolean isNullOrEmpty(CharSequence s) {
-    return (s == null || s.length() == 0);
   }
 }

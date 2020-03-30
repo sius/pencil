@@ -23,9 +23,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = PencilProperties.PREFIX)
 public class PencilProperties {
 
-  public final static String PREFIX = "liquer.pencil";
-  public final static String ENABLED = PREFIX + ".enabled";
-  public final static boolean ENABLED_DEFAULT_STATE = true;
+  public static final String PREFIX = "liquer.pencil";
+  public static final String ENABLED = PREFIX + ".enabled";
+  public static final boolean ENABLED_DEFAULT_STATE = true;
 
   /**
    * Whether to enable the auto-configuration.
