@@ -36,7 +36,7 @@
     SSHA, SSHA-224, SSHA-256, SSHA-384, SSHA-512
   </description>
   <url>https://github.com/sius/pencil/pencil-password-encoder</url>
-
+  
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>

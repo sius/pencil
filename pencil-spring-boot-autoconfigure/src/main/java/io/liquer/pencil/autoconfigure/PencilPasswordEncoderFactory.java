@@ -47,7 +47,7 @@ import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 public final class PencilPasswordEncoderFactory {
 
   /**
-   * Deprecated PasswordEncoders has been removed.
+   * 'Deprecated' PasswordEncoders has been removed.
    * Removed encoders:
    * encoders.put("noop", NoOpPasswordEncoder.getInstance());
    * encoders.put("MD4", new Md4PasswordEncoder());
