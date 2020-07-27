@@ -48,9 +48,9 @@ Add `pencil-password-encoder` to avoid auto-configuration of a passwordEncoder B
 
 ```xml
 <dependency>
-  <groupId>io.liquer.spring.security</groupId>
+  <groupId>io.liquer.pencil</groupId>
   <artifactId>pencil-password-encoder</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
