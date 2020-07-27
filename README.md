@@ -19,9 +19,9 @@ Add `pencil-spring-boot-starter` dependency and inject PasswordEncoder Bean.
 
 ```xml
 <dependency>
-  <groupId>io.liquer.spring.security</groupId>
+  <groupId>>io.liquer.pencil</groupId>
   <artifactId>pencil-spring-boot-starter</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
