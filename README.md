@@ -7,7 +7,7 @@ for the following PasswordEncoder encode Ids and aliases:
 - scrypt (`org.springframework.security.crypto.scrypt.SCryptPasswordEncoder`)
 - pbkdf2 (`org.springframework.security.crypto.password.Pbkdf2PasswordEncoder`)
 - ldap, SSHA (SSHA1, SSHA-1) (`LdapShaPasswordEncoder` compatible implementation of the Salted Secure Hash Algorithm)
-- SSHA224 (SSHA-224), SSHA256 (SSHA-256), SSHA384 (SSHA-384), SHAA512 (SSHA-512)
+- SSHA224 (SSHA-224), SSHA256 (SSHA-256), SSHA384 (SSHA-384), SSHA512 (SSHA-512)
 
 The default PasswordEncoder for encoding is always `BCryptPasswordEncoder`, 
 while a password matching challenge against the encoded password tries to retrieve 
