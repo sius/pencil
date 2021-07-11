@@ -49,7 +49,7 @@ public class PencilProperties {
   private boolean ufSafe = false;
 
   /**
-   * Whether to base64 encode URL without padding.
+   * Whether to base64 encode without padding.
    * (default: false)
    */
   private boolean noPadding = false;
