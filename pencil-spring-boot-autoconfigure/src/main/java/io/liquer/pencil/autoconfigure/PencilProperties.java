@@ -18,20 +18,53 @@
 
 package io.liquer.pencil.autoconfigure;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
-@ConfigurationProperties(prefix = PencilProperties.PREFIX)
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
+@Component
+@ConfigurationProperties(prefix = "liquer.pencil")
+@ConditionalOnExpression("${liquer.pencil.enabled:true}")
 public class PencilProperties {
-
-  public static final String PREFIX = "liquer.pencil";
-  public static final String ENABLED = PREFIX + ".enabled";
-  public static final boolean ENABLED_DEFAULT_STATE = true;
 
   /**
    * Whether to enable the auto-configuration.
    * (default: true)
    */
-  private boolean enabled;
+  private boolean enabled = true;
+
+  /**
+   * The default encode id.
+   * (default: bcrypt)
+   */
+  private String defaultEncodeId = "bcrypt";
+
+  /**
+   * Whether to base64 encode URL and file safe.
+   * (default: false)
+   */
+  private boolean ufSafe = false;
+
+  /**
+   * Whether to base64 encode URL without padding.
+   * (default: false)
+   */
+  private boolean noPadding = false;
+
+  /**
+   * The salt size in bytes.
+   * (default: 8)
+   */
+  private int saltSize = 8;
+
+  /**
+   * Charset to get bytes from password String.
+   * (default: UTF-8)
+   */
+  private Charset charset = StandardCharsets.UTF_8;
 
   public boolean isEnabled() {
     return enabled;
@@ -39,5 +72,45 @@ public class PencilProperties {
 
   public void setEnabled(boolean state) {
     enabled = state;
+  }
+
+  public boolean isUfSafe() {
+    return ufSafe;
+  }
+
+  public void setUfSafe(boolean ufSafe) {
+    this.ufSafe = ufSafe;
+  }
+
+  public boolean isNoPadding() {
+    return noPadding;
+  }
+
+  public void setNoPadding(boolean noPadding) {
+    this.noPadding = noPadding;
+  }
+
+  public Charset getCharset() {
+    return charset;
+  }
+
+  public void setCharset(Charset charset) {
+    this.charset = charset;
+  }
+
+  public int getSaltSize() {
+    return saltSize;
+  }
+
+  public void setSaltSize(int saltSize) {
+    this.saltSize = saltSize;
+  }
+
+  public String getDefaultEncodeId() {
+    return defaultEncodeId;
+  }
+
+  public void setDefaultEncodeId(String defaultEncodeId) {
+    this.defaultEncodeId = defaultEncodeId;
   }
 }

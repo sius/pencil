@@ -19,6 +19,7 @@
 package io.liquer.pencil.autoconfigure;
 
 
+import io.liquer.pencil.TestApp;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -27,23 +28,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.Assert.assertNull;
 
 /**
  * @author sius
  */
-@SpringBootTest(classes = { PasswordEncoder.class })
+@SpringBootTest(classes = { TestApp.class })
 @EnableAutoConfiguration
+@TestPropertySource(
+    properties = {
+          "liquer.pencil.enabled=false"
+    }
+)
 @Profile("pencil-disabled")
 public class PencilDisabledTest {
+
+  @Autowired(required = false)
+  private PencilProperties pencilProperties;
 
   @Autowired(required = false)
   private PasswordEncoder passwordEncoder;
 
   @Test
-  void passwords_encoder_should_be_null() {
+  void pencilProperties_should_be_null() {
+    assertNull(pencilProperties);
+  }
+
+  @Test
+  void passwordEncoder_should_be_null() {
     assertNull(passwordEncoder);
   }
 }

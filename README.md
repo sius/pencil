@@ -44,20 +44,17 @@ liquer.pencil.enabled: false
 
 ```
 
-Add `pencil-password-encoder` to avoid auto-configuration of a passwordEncoder Bean
+## Additional `DelegatingPasswordEncoder` options via Spring boot Properties 
 
-```xml
-<dependency>
-  <groupId>io.liquer.pencil</groupId>
-  <artifactId>pencil-password-encoder</artifactId>
-  <version>1.0.0</version>
-</dependency>
+```yaml
+liquer:
+  pencil:
+    enaled: true # (default true)
+    default-encode-id: SSHA512 # The default encode id for. (default: bcrypt)
+    uf-safe: false # Whether to base64 encode URL and file safe. (default: false)
+    no-padding: false # Whether to base64 encode URL without padding. (default: false)
+    salt-size: 8 # The salt size in bytes. (default: 8)
+    charset: ISO-8859-1 # Charset to get bet bytes from password. (default: UTF-8)
 ```
 
-
-## Additional encoding options on direct PasswordEncoder construction
-
-- Use custom encoding identifier {SSHA512}, {SSHA-512} ...
-- Encode with a random or custom salt
-- Create an url and file safe base64 encoded password
-- Drop trailing base64 padding ('=')
+Use custom encoding identifier {SSHA512}, {SSHA-512} ... on direct PasswordEncoder construction.

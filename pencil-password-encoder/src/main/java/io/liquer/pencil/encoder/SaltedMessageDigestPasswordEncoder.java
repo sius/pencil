@@ -21,6 +21,8 @@ package io.liquer.pencil.encoder;
 import io.liquer.pencil.encoder.support.Base64Support;
 import io.liquer.pencil.encoder.support.EPSplit;
 import io.liquer.pencil.encoder.support.EncoderSupport;
+
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -70,6 +72,7 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
 
   private final String algorithm;
   private final String identifier;
+  private final Charset charset;
   private final Set<String> supportedIdentifiers;
   private final int hashSize;
   private final int saltSize;
@@ -77,8 +80,20 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
   private final boolean noPadding;
 
   protected SaltedMessageDigestPasswordEncoder(
+          String algorithm,
+          int hashSize,
+          Set<String> supportedIdentifiers,
+          String identifier,
+          int saltSize,
+          boolean ufSafe,
+          boolean noPadding) {
+
+    this(algorithm, hashSize, StandardCharsets.UTF_8, supportedIdentifiers, identifier, saltSize, ufSafe,noPadding);
+  }
+  protected SaltedMessageDigestPasswordEncoder(
       String algorithm,
       int hashSize,
+      Charset charset,
       Set<String> supportedIdentifiers,
       String identifier,
       int saltSize,
@@ -87,6 +102,7 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
 
     this.algorithm = algorithm;
     this.identifier = identifier;
+    this.charset = charset == null ? StandardCharsets.UTF_8 : charset;
     this.supportedIdentifiers = supportedIdentifiers;
     this.hashSize = hashSize;
     this.saltSize = Math.max(saltSize, 8);
@@ -139,7 +155,7 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
     if (md == null) {
       return null;
     }
-    md.update(EncoderSupport.atob(rawPassword, StandardCharsets.UTF_8));
+    md.update(EncoderSupport.atob(rawPassword, charset));
     md.update(salt);
     return md.digest();
   }

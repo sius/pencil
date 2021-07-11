@@ -18,12 +18,8 @@
 
 package io.liquer.pencil.autoconfigure;
 
-import io.liquer.pencil.encoder.SSHA224PasswordEncoder;
-import io.liquer.pencil.encoder.SSHA256PasswordEncoder;
-import io.liquer.pencil.encoder.SSHA384PasswordEncoder;
-import io.liquer.pencil.encoder.SSHA512PasswordEncoder;
-import io.liquer.pencil.encoder.SSHAPasswordEncoder;
-
+import io.liquer.pencil.TestApp;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +32,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author sius
  */
-@SpringBootTest(classes = {PasswordEncoder.class})
+@SpringBootTest(classes = { TestApp.class })
 @EnableAutoConfiguration
 public class PencilEnabledTest {
 
   @Autowired
+  private PencilProperties pencilProperties;
+
+  @Autowired
   private PasswordEncoder passwordEncoder;
+
+  @Test
+  void loadApplicationContext() {
+
+  }
 
   @ParameterizedTest(name = "Password: Test should match {0} encodedPassword: {1}")
   @CsvSource({

@@ -18,6 +18,8 @@
 
 package io.liquer.pencil.encoder;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -43,25 +45,49 @@ public final class SSHA384PasswordEncoder extends SaltedMessageDigestPasswordEnc
    * @param saltSize the salt byte array size (with a minimum of 8 bytes)
    */
   public SSHA384PasswordEncoder(String identifier, int saltSize) {
-    this(identifier, saltSize, false, false);
+    this(identifier, saltSize, StandardCharsets.UTF_8, false, false);
+  }
+
+  /**
+   * Creates a PasswordEncoder with a custom encoding identifier,
+   * e.g.: {SSHA384}, {SSHA-384} ...
+   * @param identifier  {SSHA384}, {SSHA-384} ...
+   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
+   */
+  public SSHA384PasswordEncoder(String identifier, int saltSize, Charset charset) {
+    this(identifier, saltSize, charset,false, false);
   }
 
   /**
    * Creates a PasswordEncoder with a custom encoding identifier, e.g.: {SSHA384}, {SSHA-384} ...
    * and base64 encoding options.
-   * @param identifier {SSHA384}, {SSHA-384} ...
-   * @param saltSize the salt byte array size (with a minimum of 8 bytes)
-   * @param ufSafe url and file safe encoding if true
-   * @param noPadding drop trailing base64 padding ('=') if true
+   * @param identifier  {SSHA384}, {SSHA-384} ...
+   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
+   * @param ufSafe  url and file safe base64 encoding if true
+   * @param noPadding  drop trailing base64 padding ('=') if true
    */
   public SSHA384PasswordEncoder(String identifier, int saltSize, boolean ufSafe, boolean noPadding) {
+    this(identifier, saltSize, StandardCharsets.UTF_8, ufSafe, noPadding);
+  }
+
+  /**
+   * Creates a PasswordEncoder with a custom encoding identifier, e.g.: {SSHA384}, {SSHA-384} ...
+   * and base64 encoding options.
+   * @param identifier  {SSHA384}, {SSHA-384} ...
+   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
+   * @param charset  the charset used to get bytes from password String (default UTF-8)
+   * @param ufSafe  url and file safe base64 encoding if true
+   * @param noPadding  drop trailing base64 padding ('=') if true
+   */
+  public SSHA384PasswordEncoder(String identifier, int saltSize, Charset charset, boolean ufSafe, boolean noPadding) {
     super(
-        SHA384_ALGORITHM, SHA384_HASH_SIZE, new HashSet<>(
-            Arrays.asList(
-                SSHA384_SHORT_IDENTIFIER,
-                SSHA384_LONG_IDENTIFIER,
-                EMPTY_IDENTIFIER
-            )),
+        SHA384_ALGORITHM, SHA384_HASH_SIZE, charset,
+            new HashSet<>(
+              Arrays.asList(
+                  SSHA384_SHORT_IDENTIFIER,
+                  SSHA384_LONG_IDENTIFIER,
+                  EMPTY_IDENTIFIER
+              )),
         identifier, saltSize, ufSafe, noPadding);
   }
 }

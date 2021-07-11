@@ -18,6 +18,8 @@
 
 package io.liquer.pencil.encoder;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -33,29 +35,50 @@ public final class SSHA512PasswordEncoder extends SaltedMessageDigestPasswordEnc
    * and a random 8 byte salt value.
    */
   public SSHA512PasswordEncoder() {
-    this(SSHA512_SHORT_IDENTIFIER, DEFAULT_SALT_SIZE);
+    this(SSHA512_SHORT_IDENTIFIER, DEFAULT_SALT_SIZE, StandardCharsets.UTF_8, false, false);
   }
 
   /**
    * Creates a PasswordEncoder with a custom encoding identifier, e.g.: {SSHA512}, {SSHA-512} ...
-   * @param identifier {SSHA512}, {SSHA-512} ...
-   * @param saltSize the salt byte array size (with a minimum of 8 bytes)
+   * @param identifier  {SSHA512}, {SSHA-512} ...
+   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
    */
   public SSHA512PasswordEncoder(String identifier, int saltSize) {
-    this(identifier, saltSize, false, false);
+    this(identifier, saltSize, StandardCharsets.UTF_8, false, false);
+  }
+  /**
+   * Creates a PasswordEncoder with a custom encoding identifier, e.g.: {SSHA512}, {SSHA-512} ...
+   * @param identifier  {SSHA512}, {SSHA-512} ...
+   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
+   * @param charset  the charset used to get bytes from password String (default UTF-8)
+   */
+  public SSHA512PasswordEncoder(String identifier, int saltSize, Charset charset) {
+    this(identifier, saltSize, charset, false, false);
   }
 
   /**
    * Creates a PasswordEncoder with a custom encoding identifier, e.g.: {SSHA512}, {SSHA-512} ...
    * and base64 encoding options.
-   * @param identifier {SSHA512}, {SSHA-512} ...
-   * @param saltSize the salt byte array size (with a minimum of 8 bytes)
-   * @param ufSafe url and file safe encoding if true
-   * @param noPadding drop trailing base64 padding ('=') if true
+   * @param identifier  {SSHA512}, {SSHA-512} ...
+   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
+   * @param ufSafe  url and file safe base64 encoding if true
+   * @param noPadding  drop trailing base64 padding ('=') if true
    */
   public SSHA512PasswordEncoder(String identifier, int saltSize, boolean ufSafe, boolean noPadding) {
+    this(identifier, saltSize, StandardCharsets.UTF_8, ufSafe, noPadding);
+  }
+  /**
+   * Creates a PasswordEncoder with a custom encoding identifier, e.g.: {SSHA512}, {SSHA-512} ...
+   * and base64 encoding options.
+   * @param identifier  {SSHA512}, {SSHA-512} ...
+   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
+   * @param charset  the charset used to get bytes from password String (default UTF-8)
+   * @param ufSafe  url and file safe base64 encoding if true
+   * @param noPadding  drop trailing base64 padding ('=') if true
+   */
+  public SSHA512PasswordEncoder(String identifier, int saltSize, Charset charset, boolean ufSafe, boolean noPadding) {
     super(
-        SHA512_ALGORITHM, SHA512_HASH_SIZE, new HashSet<>(
+        SHA512_ALGORITHM, SHA512_HASH_SIZE, charset, new HashSet<>(
             Arrays.asList(
                 SSHA512_SHORT_IDENTIFIER,
                 SSHA512_LONG_IDENTIFIER,

@@ -18,8 +18,9 @@
 
 package io.liquer.pencil.autoconfigure;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -28,10 +29,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author sius
  */
 @Configuration
-@ConditionalOnProperty(
-    value = PencilProperties.ENABLED,
-    havingValue = "true",
-    matchIfMissing = PencilProperties.ENABLED_DEFAULT_STATE)
+@ComponentScan(basePackageClasses= { PencilProperties.class })
+@ConditionalOnExpression("${liquer.pencil.enabled:true}")
 public class PencilAutoConfiguration {
 
   /**
@@ -39,7 +38,7 @@ public class PencilAutoConfiguration {
    * @return the custom DelegatingPasswordEncoder
    */
   @Bean
-  public PasswordEncoder passwordEncoder() {
-    return PencilPasswordEncoderFactory.passwordEncoder();
+  public PasswordEncoder passwordEncoder(PencilProperties properties) {
+    return PencilPasswordEncoderFactory.passwordEncoder(properties);
   }
 }

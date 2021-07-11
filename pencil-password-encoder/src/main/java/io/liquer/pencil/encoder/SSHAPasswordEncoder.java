@@ -18,6 +18,8 @@
 
 package io.liquer.pencil.encoder;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -34,36 +36,62 @@ public final class SSHAPasswordEncoder extends SaltedMessageDigestPasswordEncode
    * compatible with org.springframework.security.crypto.password.LdapShaPasswordEncoder
    */
   public SSHAPasswordEncoder() {
-    this(SSHA_SHORT_IDENTIFIER, DEFAULT_SALT_SIZE);
+    this(SSHA_SHORT_IDENTIFIER, DEFAULT_SALT_SIZE, StandardCharsets.UTF_8, false, false);
   }
 
   /**
    * Creates a PasswordEncoder with a custom encoding identifier,
    * e.g.: {SSHA}, {SSHA1}, {SSHA-1} ...
-   * @param identifier {SSHA}, {SSHA1}, {SSHA-1} ...
-   * @param saltSize the salt byte array size (with a minimum of 8 bytes)
+   * @param identifier  {SSHA}, {SSHA1}, {SSHA-1} ...
+   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
    */
   public SSHAPasswordEncoder(String identifier, int saltSize) {
-    this(identifier, saltSize, false, false);
+    this(identifier, saltSize, StandardCharsets.UTF_8, false, false);
+  }
+
+  /**
+   * Creates a PasswordEncoder with a custom encoding identifier,
+   * e.g.: {SSHA}, {SSHA1}, {SSHA-1} ...
+   * @param identifier  {SSHA}, {SSHA1}, {SSHA-1} ...
+   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
+   * @param charset  the charset used to get bytes from password String (default UTF-8)
+   */
+  public SSHAPasswordEncoder(String identifier, int saltSize, Charset charset) {
+    this(identifier, saltSize, charset,false,false);
   }
 
   /**
    * Creates a PasswordEncoder with a custom encoding identifier,
    * e.g.: {SSHA}, {SSHA1}, {SSHA-1} ...
    * and base64 encoding options.
-   * @param identifier {SSHA}, {SSHA1}, {SSHA-1} ...
-   * @param saltSize the salt byte array size (with a minimum of 8 bytes)
-   * @param ufSafe url and file safe encoding if true
-   * @param noPadding drop trailing base64 padding ('=') if true
+   * @param identifier  {SSHA}, {SSHA1}, {SSHA-1} ...
+   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
+   * @param ufSafe  url and file safe base64 encoding if true
+   * @param noPadding  drop trailing base64 padding ('=') if true
    */
   public SSHAPasswordEncoder(String identifier, int saltSize, boolean ufSafe, boolean noPadding) {
+    this(identifier, saltSize, StandardCharsets.UTF_8, ufSafe, noPadding);
+  }
+
+  /**
+   * Creates a PasswordEncoder with a custom encoding identifier,
+   * e.g.: {SSHA}, {SSHA1}, {SSHA-1} ...
+   * and base64 encoding options.
+   * @param identifier  {SSHA}, {SSHA1}, {SSHA-1} ...
+   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
+   * @param charset  the charset used to get bytes from password String (default UTF-8)
+   * @param ufSafe  url and file safe base64 encoding if true
+   * @param noPadding  drop trailing base64 padding ('=') if true
+   */
+  public SSHAPasswordEncoder(String identifier, int saltSize, Charset charset, boolean ufSafe, boolean noPadding) {
     super(
-        SHA1_ALGORITHM, SHA1_HASH_SIZE, new HashSet<>(
-            Arrays.asList(
-                SSHA_SHORT_IDENTIFIER,
-                SSHA_LONG_IDENTIFIER,
-                EMPTY_IDENTIFIER
-            )),
+        SHA1_ALGORITHM, SHA1_HASH_SIZE, charset,
+            new HashSet<>(
+              Arrays.asList(
+                  SSHA_SHORT_IDENTIFIER,
+                  SSHA_LONG_IDENTIFIER,
+                  EMPTY_IDENTIFIER
+              )),
         identifier, saltSize, ufSafe, noPadding);
   }
 }
