@@ -13,7 +13,7 @@ The default PasswordEncoder for encoding is `BCryptPasswordEncoder`,
 while a password matching challenge against the encoded password tries to retrieve 
 a suitable PasswordEncoder identified by it's leading encode identifier, e.g.: `{SSHA512}`, `{bcrypt}` etc.
 The default PasswordEncoder for encoding can be changed with the `liquer.pencil.default-encode-id` property, e.g.:
-`liquer.pencil.default-encode-id: ISO-8859-1`
+`liquer.pencil.default-encode-id: SSHA512`
 
 ## Usage
 
@@ -57,7 +57,7 @@ liquer:
     uf-safe: false # Whether to base64 encode password hashes URL and file safe. (default: false)
     no-padding: false # Whether to base64 encode password hashes without padding. (default: false)
     salt-size: 8 # The salt size in bytes. (default: 8)
-    charset: ISO-8859-1 # Charset used to get bytes from password. (default: UTF-8)
+    charset: ISO-8859-1 # Charset used to get bytes from the password. (default: UTF-8)
 ```
 
 Use custom encoding identifier {SSHA512}, {SSHA-512} ... on direct PasswordEncoder construction.
