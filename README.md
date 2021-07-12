@@ -12,7 +12,8 @@ for the following PasswordEncoder encode Ids and aliases:
 The default PasswordEncoder for encoding is `BCryptPasswordEncoder`, 
 while a password matching challenge against the encoded password tries to retrieve 
 a suitable PasswordEncoder identified by it's leading encode identifier, e.g.: `{SSHA512}`, `{bcrypt}` etc.
-The default PasswordEncoder for encoding can be changed with the `liquer.pencil.default-encode-id` property.
+The default PasswordEncoder for encoding can be changed with the `liquer.pencil.default-encode-id` property, e.g.:
+`liquer.pencil.default-encode-id: ISO-8859-1`
 
 ## Usage
 
