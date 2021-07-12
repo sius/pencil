@@ -50,9 +50,9 @@ liquer.pencil.enabled: false
 liquer:
   pencil:
     enaled: true # (default true)
-    default-encode-id: SSHA512 # The default encode id for encoding. (default: bcrypt)
-    uf-safe: false # Whether to base64 encode URL and file safe. (default: false)
-    no-padding: false # Whether to base64 encode without padding. (default: false)
+    default-encode-id: SSHA512 # The default encode id for encoding passwords. (default: bcrypt)
+    uf-safe: false # Whether to base64 encode password hashes URL and file safe. (default: false)
+    no-padding: false # Whether to base64 encode password hashes without padding. (default: false)
     salt-size: 8 # The salt size in bytes. (default: 8)
     charset: ISO-8859-1 # Charset used to get bytes from password. (default: UTF-8)
 ```
