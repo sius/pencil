@@ -17,7 +17,7 @@ The default PasswordEncoder for encoding can be changed with the `liquer.pencil.
 
 ## Usage
 
-Add `pencil-spring-boot-starter` dependency and inject PasswordEncoder Bean.
+Add `pencil-spring-boot-starter` dependency and inject the provided PasswordEncoder Bean.
 
 ```xml
 <dependency>
@@ -27,6 +27,7 @@ Add `pencil-spring-boot-starter` dependency and inject PasswordEncoder Bean.
 </dependency>
 ```
 
+_field injection example_
 ```java
 
 import org.springframework.beans.factory.annotation.Autowired;
