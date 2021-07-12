@@ -1,7 +1,6 @@
 package io.liquer.pencil.issue;
 
 import io.liquer.pencil.TestApp;
-import io.liquer.pencil.autoconfigure.PencilProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
