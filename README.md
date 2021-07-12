@@ -9,9 +9,10 @@ for the following PasswordEncoder encode Ids and aliases:
 - ldap, SSHA (SSHA1, SSHA-1) (`LdapShaPasswordEncoder` compatible implementation of the Salted Secure Hash Algorithm)
 - SSHA224 (SSHA-224), SSHA256 (SSHA-256), SSHA384 (SSHA-384), SSHA512 (SSHA-512)
 
-The default PasswordEncoder for encoding is always `BCryptPasswordEncoder`, 
+The default PasswordEncoder for encoding is `BCryptPasswordEncoder`, 
 while a password matching challenge against the encoded password tries to retrieve 
 a suitable PasswordEncoder identified by it's leading encode identifier, e.g.: `{SSHA512}`, `{bcrypt}` etc.
+The default PasswordEncoder for encoding can be changed with the `liquer.pencil.default-encode-id` Property.
 
 ## Usage
 
