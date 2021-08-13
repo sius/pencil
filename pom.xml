@@ -108,7 +108,7 @@
 
     <!-- dependency versions -->
     <version.assert-jcore>3.4.1</version.assert-jcore>
-    <version.bcprov-jdk15on>1.60</version.bcprov-jdk15on>
+    <version.bcprov-jdk15on>1.67</version.bcprov-jdk15on>
     <version.jul-to-slf4j>1.7.26</version.jul-to-slf4j>
     <version.junit-jupiter>5.5.2</version.junit-jupiter>
     <version.junit-platform-launcher>1.5.2</version.junit-platform-launcher>
