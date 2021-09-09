@@ -52,7 +52,7 @@ liquer.pencil.enabled: false
 ```yaml
 liquer:
   pencil:
-    enaled: true # (default true)
+    enabled: true # (default true)
     default-encode-id: SSHA512 # The default encode id for encoding passwords. (default: bcrypt)
     uf-safe: false # Whether to base64 encode password hashes URL and file safe. (default: false)
     no-padding: false # Whether to base64 encode password hashes without padding. (default: false)
