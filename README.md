@@ -21,7 +21,7 @@ Add `pencil-spring-boot-starter` dependency and inject the provided PasswordEnco
 
 ```xml
 <dependency>
-  <groupId>>io.liquer.pencil</groupId>
+  <groupId>io.liquer.pencil</groupId>
   <artifactId>pencil-spring-boot-starter</artifactId>
   <version>1.1.0</version>
 </dependency>
