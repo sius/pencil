@@ -29,7 +29,7 @@
   <groupId>io.liquer.pencil</groupId>
   <artifactId>pencil-parent-pom</artifactId>
   <packaging>pom</packaging>
-  <version>2.0.0</version>
+  <version>2.0.1-SNAPSHOT</version>
 
   <name>pencil-parent-pom</name>
   <description>Parent POM of the pencil artifacts.</description>
@@ -62,7 +62,7 @@
     <connection>scm:git:git://github.com/sius/pencil.git</connection>
     <developerConnection>scm:git:git@github.com:sius/pencil.git</developerConnection>
     <url>https://github.com/sius/pencil</url>
-    <tag>2.0.0</tag>
+    <tag>1.1.0</tag>
   </scm>
 
   <distributionManagement>
