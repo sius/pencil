@@ -62,7 +62,7 @@
     <connection>scm:git:git://github.com/sius/pencil.git</connection>
     <developerConnection>scm:git:git@github.com:sius/pencil.git</developerConnection>
     <url>https://github.com/sius/pencil</url>
-    <tag>2.0.0</tag>
+    <tag>1.1.0</tag>
   </scm>
 
   <distributionManagement>
