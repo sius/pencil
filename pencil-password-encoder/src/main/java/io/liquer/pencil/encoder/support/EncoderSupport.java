@@ -18,7 +18,9 @@
 
 package io.liquer.pencil.encoder.support;
 
+import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 
 /**
@@ -33,8 +35,15 @@ public final class EncoderSupport {
    * @param charset the Charset
    * @return the byte array representation
    */
-  public static byte[] atob(CharSequence seq, Charset charset) {
-    return charset.encode(CharBuffer.wrap(seq)).array();
+  public static byte[] encode(CharSequence seq, Charset charset) {
+    try {
+      final ByteBuffer bytes = charset.newEncoder().encode(CharBuffer.wrap(seq));
+      byte[] copy = new byte[bytes.limit()];
+      System.arraycopy(bytes.array(), 0, copy, 0, bytes.limit());
+      return copy;
+    } catch (CharacterCodingException e) {
+      throw new IllegalArgumentException("Encoding failed", e);
+    }
   }
 
   /**

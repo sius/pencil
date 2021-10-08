@@ -72,7 +72,6 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
 
   private final String algorithm;
   private final String identifier;
-  private final Charset charset;
   private final Set<String> supportedIdentifiers;
   private final int hashSize;
   private final int saltSize;
@@ -88,21 +87,8 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
           boolean ufSafe,
           boolean noPadding) {
 
-    this(algorithm, hashSize, StandardCharsets.UTF_8, supportedIdentifiers, identifier, saltSize, ufSafe,noPadding);
-  }
-  protected SaltedMessageDigestPasswordEncoder(
-      String algorithm,
-      int hashSize,
-      Charset charset,
-      Set<String> supportedIdentifiers,
-      String identifier,
-      int saltSize,
-      boolean ufSafe,
-      boolean noPadding) {
-
     this.algorithm = algorithm;
     this.identifier = identifier;
-    this.charset = charset == null ? StandardCharsets.UTF_8 : charset;
     this.supportedIdentifiers = supportedIdentifiers;
     this.hashSize = hashSize;
     this.saltSize = Math.max(saltSize, 8);
@@ -141,7 +127,8 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
     }
 
     final byte[] salt = split.getSalt();
-    final String challenge =  split.getIdentifier() + b64(EncoderSupport.concat(sha(rawPassword, salt), salt));
+    System.out.println(b64(EncoderSupport.concat(sha(rawPassword, salt), salt)));
+    final String challenge = split.getIdentifier() + b64(EncoderSupport.concat(sha(rawPassword, salt), salt));
 
     return encodedPassword.equals(challenge);
   }
@@ -155,8 +142,10 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
     if (md == null) {
       return null;
     }
-    md.update(EncoderSupport.atob(rawPassword, charset));
+
+    md.update(EncoderSupport.encode(rawPassword, StandardCharsets.UTF_8));
     md.update(salt);
+
     return md.digest();
   }
 

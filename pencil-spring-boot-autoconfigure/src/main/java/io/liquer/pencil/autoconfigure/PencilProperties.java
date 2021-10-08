@@ -60,12 +60,6 @@ public class PencilProperties {
    */
   private int saltSize = 8;
 
-  /**
-   * Charset to get bytes from password String.
-   * (default: UTF-8)
-   */
-  private Charset charset = StandardCharsets.UTF_8;
-
   public boolean isEnabled() {
     return enabled;
   }
@@ -88,14 +82,6 @@ public class PencilProperties {
 
   public void setNoPadding(boolean noPadding) {
     this.noPadding = noPadding;
-  }
-
-  public Charset getCharset() {
-    return charset;
-  }
-
-  public void setCharset(Charset charset) {
-    this.charset = charset;
   }
 
   public int getSaltSize() {

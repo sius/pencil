@@ -19,6 +19,7 @@
 package io.liquer.pencil.encoder;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static io.liquer.pencil.encoder.TestHelper.log;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,6 +30,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author sius
  */
 public class SSHA512PasswordEncoderTest {
+
+  @Test
+  void encodeWithPrefixedSalt() {
+    final String passwordHash = "{SSHA512}/I5AfKcK9Nl0sMXDVF8pM8KkmZRrvUEwnI4oUAI1EKikMbgzw+ykujnOgeza3FGuYtBq32XZJ306DPQHR5avuTAwOGRiMGVi";
+    final CharSequence rawPassword = "Xx3vuFMXVGSQS413";
+    final PasswordEncoder encoder = new SSHA512PasswordEncoder();
+    final boolean actual = encoder.matches(rawPassword, passwordHash);
+    assertTrue(actual);
+  }
 
   @Test
   void encodeWithShortIdentifier() {

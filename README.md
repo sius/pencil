@@ -6,7 +6,7 @@ for the following PasswordEncoder encode Ids and aliases:
 - bcrypt (`org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder`)
 - scrypt (`org.springframework.security.crypto.scrypt.SCryptPasswordEncoder`)
 - pbkdf2 (`org.springframework.security.crypto.password.Pbkdf2PasswordEncoder`)
-- ldap, SSHA (SSHA1, SSHA-1) (`LdapShaPasswordEncoder` compatible implementation of the Salted Secure Hash Algorithm)
+- ldap, SSHA (SSHA1, SSHA-1) (`LdapShaPasswordEncoder` compatible implementation of the legacy/non secureSalted Secure Hash Algorithm)
 - SSHA224 (SSHA-224), SSHA256 (SSHA-256), SSHA384 (SSHA-384), SSHA512 (SSHA-512)
 
 The default PasswordEncoder for encoding is `BCryptPasswordEncoder`, 
@@ -23,9 +23,13 @@ Add `pencil-spring-boot-starter` dependency and inject the provided PasswordEnco
 <dependency>
   <groupId>io.liquer.pencil</groupId>
   <artifactId>pencil-spring-boot-starter</artifactId>
-  <version>1.1.0</version>
+  <version>2.0.0</version>
 </dependency>
 ```
+
+> __IMPORTANT__:  
+> Please do not use older versions because of an utf-8 encoding bug.
+> Since Version 2.0.0 the autoconfiguration Property charset has been removed.
 
 _field injection example_
 ```java
@@ -57,7 +61,6 @@ liquer:
     uf-safe: false # Whether to base64 encode password hashes URL and file safe. (default: false)
     no-padding: false # Whether to base64 encode password hashes without padding. (default: false)
     salt-size: 8 # The salt size in bytes. (default: 8)
-    charset: ISO-8859-1 # Charset used to get bytes from the password. (default: UTF-8)
 ```
 
 Use custom encoding identifier {SSHA512}, {SSHA-512} ... on direct PasswordEncoder construction.

@@ -26,6 +26,7 @@ public final class EPSplit {
   private byte[] hash = null;
   private boolean identifierSupported = false;
   private String identifier = null;
+  private boolean prefixedSalt = true;
 
   /**
    * An internal helper to split encoded passwords into their parts
@@ -35,14 +36,27 @@ public final class EPSplit {
    * @param hashSize the algorithm specific hashSize
    */
   public EPSplit(
+          String encodedPassword,
+          Set<String> supportedIdentifiers, int hashSize) {
+    this(encodedPassword, supportedIdentifiers, hashSize, false);
+  }
+  /**
+   * An internal helper to split encoded passwords into their parts
+   * (identifier/encodId, hash, salt).
+   * @param encodedPassword the encoded pssword
+   * @param supportedIdentifiers a set with case sensitive encode identifiers
+   * @param hashSize the algorithm specific hashSize
+   * @param prefixedSalt use prefixed salt if true
+   */
+  public EPSplit(
       String encodedPassword,
-      Set<String> supportedIdentifiers, int hashSize) {
+      Set<String> supportedIdentifiers, int hashSize, boolean prefixedSalt) {
     if (encodedPassword == null
         || supportedIdentifiers == null
         || supportedIdentifiers.isEmpty()) {
       return;
     }
-
+    this.prefixedSalt = prefixedSalt;
     final int start = encodedPassword.indexOf('{');
     final int end = encodedPassword.indexOf('}');
 
@@ -65,8 +79,13 @@ public final class EPSplit {
         if (saltSize > 0) {
           hash = new byte[hashSize];
           salt = new byte[saltSize];
-          System.arraycopy(raw, 0, hash, 0, hashSize);
-          System.arraycopy(raw, hashSize, salt, 0, saltSize);
+          if (this.prefixedSalt) {
+            System.arraycopy(raw, 0, salt, 0, saltSize);
+            System.arraycopy(raw, saltSize, hash, 0, hashSize);
+          } else {
+            System.arraycopy(raw, 0, hash, 0, hashSize);
+            System.arraycopy(raw, hashSize, salt, 0, saltSize);
+          }
         }
       } else {
         hash = new byte[0];
@@ -91,8 +110,12 @@ public final class EPSplit {
     return identifierSupported;
   }
 
+  public boolean isPrefixedSalt() {
+    return prefixedSalt;
+  }
+
   /**
-   * Get the identifier part.
+   * Get the salt part.
    * @return the salt part
    */
   public byte[] getSalt() {

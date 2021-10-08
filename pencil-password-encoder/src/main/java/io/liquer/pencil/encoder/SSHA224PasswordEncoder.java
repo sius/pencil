@@ -35,7 +35,7 @@ public final class SSHA224PasswordEncoder extends SaltedMessageDigestPasswordEnc
    * and a random 8 byte salt value.
    */
   public SSHA224PasswordEncoder() {
-    this(SSHA224_SHORT_IDENTIFIER, DEFAULT_SALT_SIZE, StandardCharsets.UTF_8, false, false);
+    this(SSHA224_SHORT_IDENTIFIER, DEFAULT_SALT_SIZE,false, false);
   }
 
   /**
@@ -49,16 +49,6 @@ public final class SSHA224PasswordEncoder extends SaltedMessageDigestPasswordEnc
 
   /**
    * Creates a PasswordEncoder with a custom encoding identifier, e.g.: {SSHA224}, {SSHA-224} ...
-   * @param identifier  {SSHA224}, {SSHA-224} ...
-   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
-   * @param charset  the charset used to get bytes from password String (default UTF-8)
-   */
-  public SSHA224PasswordEncoder(String identifier, int saltSize, Charset charset) {
-    this(identifier, saltSize, charset, false, false);
-  }
-
-  /**
-   * Creates a PasswordEncoder with a custom encoding identifier, e.g.: {SSHA224}, {SSHA-224} ...
    * and base64 encoding options.
    * @param identifier  {SSHA224}, {SSHA-224} ...
    * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
@@ -66,21 +56,8 @@ public final class SSHA224PasswordEncoder extends SaltedMessageDigestPasswordEnc
    * @param noPadding  drop trailing base64 padding ('=') if true
    */
   public SSHA224PasswordEncoder(String identifier, int saltSize, boolean ufSafe, boolean noPadding) {
-    this(identifier, saltSize, StandardCharsets.UTF_8, ufSafe, noPadding);
-  }
-
-  /**
-   * Creates a PasswordEncoder with a custom encoding identifier, e.g.: {SSHA224}, {SSHA-224} ...
-   * and base64 encoding options.
-   * @param identifier  {SSHA224}, {SSHA-224} ...
-   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
-   * @param charset  the charset used to get bytes from password String (default UTF-8)
-   * @param ufSafe  url and file safe base64 encoding if true
-   * @param noPadding  drop trailing base64 padding ('=') if true
-   */
-  public SSHA224PasswordEncoder(String identifier, int saltSize, Charset charset, boolean ufSafe, boolean noPadding) {
     super(
-      SHA224_ALGORITHM, SHA224_HASH_SIZE, charset,
+      SHA224_ALGORITHM, SHA224_HASH_SIZE,
         new HashSet<>(
           Arrays.asList(
             SSHA224_SHORT_IDENTIFIER,

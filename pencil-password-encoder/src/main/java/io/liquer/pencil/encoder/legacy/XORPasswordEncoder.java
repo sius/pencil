@@ -18,7 +18,6 @@
 
 package io.liquer.pencil.encoder.legacy;
 
-import static io.liquer.pencil.encoder.support.EncoderSupport.atob;
 import static io.liquer.pencil.encoder.support.EncoderSupport.isNullOrEmpty;
 
 import io.liquer.pencil.encoder.support.Base64Support;
@@ -28,6 +27,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import io.liquer.pencil.encoder.support.EncoderSupport;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -109,7 +110,7 @@ public final class XORPasswordEncoder implements PasswordEncoder {
     if (rawPassword == null) {
       return null;
     }
-    return identifier + b64(xor(atob(rawPassword, charset), atob(unrepeatedKey, charset)));
+    return identifier + b64(xor(EncoderSupport.encode(rawPassword, charset), EncoderSupport.encode(unrepeatedKey, charset)));
   }
 
   @Override
@@ -128,7 +129,7 @@ public final class XORPasswordEncoder implements PasswordEncoder {
     }
 
     final String challenge =  split.getIdentifier()
-        + b64(xor(atob(rawPassword, charset), atob(unrepeatedKey, charset)));
+        + b64(xor(EncoderSupport.encode(rawPassword, charset), EncoderSupport.encode(unrepeatedKey, charset)));
     return encodedPassword.equals(challenge);
   }
 

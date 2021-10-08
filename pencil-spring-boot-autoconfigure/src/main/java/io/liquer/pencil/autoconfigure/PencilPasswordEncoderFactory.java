@@ -71,7 +71,6 @@ public final class PencilPasswordEncoderFactory {
 
     final PasswordEncoder ssha = new SSHAPasswordEncoder(EMPTY,
             pencilProperties.getSaltSize(),
-            pencilProperties.getCharset(),
             pencilProperties.isUfSafe(),
             pencilProperties.isNoPadding());
     encoders.put("ldap", ssha);
@@ -81,7 +80,6 @@ public final class PencilPasswordEncoderFactory {
 
     final PasswordEncoder ssha224 = new SSHA224PasswordEncoder(EMPTY,
             pencilProperties.getSaltSize(),
-            pencilProperties.getCharset(),
             pencilProperties.isUfSafe(),
             pencilProperties.isNoPadding());
     encoders.put("SSHA224", ssha224);
@@ -89,7 +87,6 @@ public final class PencilPasswordEncoderFactory {
 
     final PasswordEncoder ssha256 = new SSHA256PasswordEncoder(EMPTY,
             pencilProperties.getSaltSize(),
-            pencilProperties.getCharset(),
             pencilProperties.isUfSafe(),
             pencilProperties.isNoPadding());
     encoders.put("SSHA256", ssha256);
@@ -97,7 +94,6 @@ public final class PencilPasswordEncoderFactory {
 
     final PasswordEncoder ssha384 = new SSHA384PasswordEncoder(EMPTY,
             pencilProperties.getSaltSize(),
-            pencilProperties.getCharset(),
             pencilProperties.isUfSafe(),
             pencilProperties.isNoPadding());
     encoders.put("SSHA384", ssha384);
@@ -105,7 +101,6 @@ public final class PencilPasswordEncoderFactory {
 
     final PasswordEncoder ssha512 = new SSHA512PasswordEncoder(EMPTY,
             pencilProperties.getSaltSize(),
-            pencilProperties.getCharset(),
             pencilProperties.isUfSafe(),
             pencilProperties.isNoPadding());
     encoders.put("SSHA512", ssha512);
