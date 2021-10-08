@@ -108,7 +108,7 @@
 
     <!-- dependency versions -->
     <version.assert-jcore>3.4.1</version.assert-jcore>
-    <version.bcprov-jdk15on>1.67</version.bcprov-jdk15on>
+    <version.bcprov-jdk15on>1.69</version.bcprov-jdk15on>
     <version.jul-to-slf4j>1.7.26</version.jul-to-slf4j>
     <version.junit-jupiter>5.5.2</version.junit-jupiter>
     <version.junit-platform-launcher>1.5.2</version.junit-platform-launcher>
@@ -117,7 +117,7 @@
     <version.spring-boot-starter-parent>2.2.4.RELEASE</version.spring-boot-starter-parent>
 
     <!-- plugin versions -->
-    <version.jacoco-maven-plugin>0.8.5</version.jacoco-maven-plugin>
+    <version.jacoco-maven-plugin>0.8.7</version.jacoco-maven-plugin>
     <version.maven-checkstyle-plugin>3.1.1</version.maven-checkstyle-plugin>
     <version.maven-deploy-plugin>2.8.2</version.maven-deploy-plugin>
     <version.maven-gpg-plugin>3.0.1</version.maven-gpg-plugin>
