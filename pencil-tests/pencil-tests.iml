@@ -53,7 +53,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-expression:5.3.9" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-web:5.3.9" level="project" />
     <orderEntry type="module" module-name="pencil-spring-boot-autoconfigure" scope="TEST" />
-    <orderEntry type="module" module-name="pencil-password-encoder" scope="TEST" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.liquer.pencil:pencil-password-encoder:2.0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.yaml:snakeyaml:1.26" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.bouncycastle:bcprov-jdk15on:1.69" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jul-to-slf4j:1.7.26" level="project" />
