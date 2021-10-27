@@ -18,8 +18,6 @@
 
 package io.liquer.pencil.encoder;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -41,9 +39,9 @@ public final class SSHAPasswordEncoder extends SaltedMessageDigestPasswordEncode
 
   /**
    * Creates a PasswordEncoder with a custom encoding identifier,
-   * e.g.: {SSHA}, {SSHA1}, {SSHA-1} ...
-   * @param identifier  {SSHA}, {SSHA1}, {SSHA-1} ...
-   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
+   * e.g.: {SHA}, {SSHA}, {SSHA1}, {SSHA-1} ...
+   * @param identifier  {SHA}, {SSHA}, {SSHA1}, {SSHA-1} ...
+   * @param saltSize  the salt byte array size (to create an unsalted SHA password hash use 0)
    */
   public SSHAPasswordEncoder(String identifier, int saltSize) {
     this(identifier, saltSize,false,false);
@@ -51,10 +49,10 @@ public final class SSHAPasswordEncoder extends SaltedMessageDigestPasswordEncode
 
   /**
    * Creates a PasswordEncoder with a custom encoding identifier,
-   * e.g.: {SSHA}, {SSHA1}, {SSHA-1} ...
+   * e.g.: {SHA}, {SSHA}, {SSHA1}, {SSHA-1} ...
    * and base64 encoding options.
-   * @param identifier  {SSHA}, {SSHA1}, {SSHA-1} ...
-   * @param saltSize  the salt byte array size (with a minimum of 8 bytes)
+   * @param identifier  {SHA}, {SSHA}, {SSHA1}, {SSHA-1} ...
+   * @param saltSize  the salt byte array size (to create an unsalted SHA password hash use 0)
    * @param ufSafe  url and file safe base64 encoding if true
    * @param noPadding  drop trailing base64 padding ('=') if true
    */
