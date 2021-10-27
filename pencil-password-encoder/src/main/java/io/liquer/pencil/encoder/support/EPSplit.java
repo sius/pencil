@@ -36,27 +36,13 @@ public final class EPSplit {
    * @param hashSize the algorithm specific hashSize
    */
   public EPSplit(
-          String encodedPassword,
-          Set<String> supportedIdentifiers, int hashSize) {
-    this(encodedPassword, supportedIdentifiers, hashSize, false);
-  }
-  /**
-   * An internal helper to split encoded passwords into their parts
-   * (identifier/encodId, hash, salt).
-   * @param encodedPassword the encoded pssword
-   * @param supportedIdentifiers a set with case sensitive encode identifiers
-   * @param hashSize the algorithm specific hashSize
-   * @param prefixedSalt use prefixed salt if true
-   */
-  public EPSplit(
       String encodedPassword,
-      Set<String> supportedIdentifiers, int hashSize, boolean prefixedSalt) {
+      Set<String> supportedIdentifiers, int hashSize) {
     if (encodedPassword == null
         || supportedIdentifiers == null
         || supportedIdentifiers.isEmpty()) {
       return;
     }
-    this.prefixedSalt = prefixedSalt;
     final int start = encodedPassword.indexOf('{');
     final int end = encodedPassword.indexOf('}');
 
@@ -76,16 +62,11 @@ public final class EPSplit {
         final byte[] raw = Base64Support
             .base64Decode(encodedPassword.substring(end + 1));
         final int saltSize = raw.length - hashSize;
+        hash = new byte[hashSize];
+        salt = new byte[Math.max(saltSize, 0)];
+        System.arraycopy(raw, 0, hash, 0, hashSize);
         if (saltSize > 0) {
-          hash = new byte[hashSize];
-          salt = new byte[saltSize];
-          if (this.prefixedSalt) {
-            System.arraycopy(raw, 0, salt, 0, saltSize);
-            System.arraycopy(raw, saltSize, hash, 0, hashSize);
-          } else {
-            System.arraycopy(raw, 0, hash, 0, hashSize);
-            System.arraycopy(raw, hashSize, salt, 0, saltSize);
-          }
+          System.arraycopy(raw, hashSize, salt, 0, saltSize);
         }
       } else {
         hash = new byte[0];

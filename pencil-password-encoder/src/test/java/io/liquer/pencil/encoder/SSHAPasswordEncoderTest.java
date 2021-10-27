@@ -19,8 +19,11 @@
 package io.liquer.pencil.encoder;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.crypto.KeyGenerator;
 
 import static io.liquer.pencil.encoder.TestHelper.log;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,7 +33,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author sius
  */
+@SuppressWarnings("deprecated")
 public class SSHAPasswordEncoderTest {
+
+
+  @Test
+  void encodeWithoutSalt() {
+    final CharSequence rawPassword = "test";
+    final SSHAPasswordEncoder encoder = new SSHAPasswordEncoder("{SHA}", 0);
+    final LdapShaPasswordEncoder ldapEncoder = new LdapShaPasswordEncoder(KeyGenerators.secureRandom(0));
+
+    final String encoded = encoder.encode(rawPassword);
+    log(encoded);
+    assertTrue(encoded.startsWith(SSHAPasswordEncoder.SHA_IDENTIFIER));
+    assertTrue(encoder.matches(rawPassword, encoded));
+    assertTrue(ldapEncoder.matches(rawPassword, encoded));
+
+
+    final String encoded2 = ldapEncoder.encode(rawPassword);
+    assertTrue(encoded2.startsWith(SSHAPasswordEncoder.SHA_IDENTIFIER));
+    assertTrue(encoder.matches(rawPassword, encoded2));
+    assertTrue(ldapEncoder.matches(rawPassword, encoded2));
+
+  }
 
   @Test
   void encodeWithShortIdentifier() {
