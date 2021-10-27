@@ -63,6 +63,9 @@ public final class SSHAPasswordEncoder extends SaltedMessageDigestPasswordEncode
         SHA1_ALGORITHM, SHA1_HASH_SIZE,
             new HashSet<>(
               Arrays.asList(
+                  SHA_IDENTIFIER,
+                  SHA1_SHORT_IDENTIFIER,
+                  SHA1_LONG_IDENTIFIER,
                   SSHA_SHORT_IDENTIFIER,
                   SSHA_LONG_IDENTIFIER,
                   EMPTY_IDENTIFIER
