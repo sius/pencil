@@ -47,7 +47,7 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
 
   public static int SHA1_HASH_SIZE = 20;
   public static String SHA1_ALGORITHM = "SHA-1";
-  public static String SSHA_SHORT_IDENTIFIER = "{SSHA}";
+  public static String SSHA_SHORT_IDENTIFIER = " {SSHA}";
   public static String SSHA_LONG_IDENTIFIER = "{SSHA1}";
 
   public static int SHA224_HASH_SIZE = 28;
@@ -127,7 +127,6 @@ abstract class SaltedMessageDigestPasswordEncoder implements PasswordEncoder {
     }
 
     final byte[] salt = split.getSalt();
-    System.out.println(b64(EncoderSupport.concat(sha(rawPassword, salt), salt)));
     final String challenge = split.getIdentifier() + b64(EncoderSupport.concat(sha(rawPassword, salt), salt));
 
     return encodedPassword.equals(challenge);
