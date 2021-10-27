@@ -6,7 +6,7 @@ for the following PasswordEncoder encode Ids and aliases:
 - bcrypt (`org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder`)
 - scrypt (`org.springframework.security.crypto.scrypt.SCryptPasswordEncoder`)
 - pbkdf2 (`org.springframework.security.crypto.password.Pbkdf2PasswordEncoder`)
-- ldap, SSHA (SSHA1, SSHA-1) (`LdapShaPasswordEncoder` compatible implementation of the legacy/non secureSalted Secure Hash Algorithm)
+- ldap, SHA, SSHA (SSHA1, SSHA-1) (`LdapShaPasswordEncoder` compatible implementation of the legacy/non secureSalted Secure Hash Algorithm)
 - SSHA224 (SSHA-224), SSHA256 (SSHA-256), SSHA384 (SSHA-384), SSHA512 (SSHA-512)
 
 The default PasswordEncoder for encoding is `BCryptPasswordEncoder`, 
@@ -23,13 +23,14 @@ Add `pencil-spring-boot-starter` dependency and inject the provided PasswordEnco
 <dependency>
   <groupId>io.liquer.pencil</groupId>
   <artifactId>pencil-spring-boot-starter</artifactId>
-  <version>2.0.0</version>
-</dependency>
+  <version>2.0.2
 ```
 
 > __IMPORTANT__:  
-> Please do not use older versions because of an utf-8 encoding bug.
-> Since Version 2.0.0 the autoconfiguration Property charset has been removed.
+> Please do not use older versions than 2.0.1:
+> - longer passwords fail due an utf-8 encoding bug
+> - Version 2.0.0 leaks password hash to stdout
+> - Since Version 2.0.0 the autoconfiguration Property charset has been removed.
 
 _field injection example_
 ```java
