@@ -69,11 +69,20 @@ public final class PencilPasswordEncoderFactory {
     encoders.put("scrypt", new SCryptPasswordEncoder());
     encoders.put("pbkdf2", new Pbkdf2PasswordEncoder());
 
+
+    final PasswordEncoder ldap = new SSHAPasswordEncoder(EMPTY,
+        0,
+        pencilProperties.isUfSafe(),
+        pencilProperties.isNoPadding());
+    encoders.put("ldap", ldap);
+    encoders.put("SHA", ldap);
+    encoders.put("SHA1", ldap);
+    encoders.put("SHA-1", ldap);
+
     final PasswordEncoder ssha = new SSHAPasswordEncoder(EMPTY,
             pencilProperties.getSaltSize(),
             pencilProperties.isUfSafe(),
             pencilProperties.isNoPadding());
-    encoders.put("ldap", ssha);
     encoders.put("SSHA", ssha);
     encoders.put("SSHA1", ssha);
     encoders.put("SSHA-1", ssha);
