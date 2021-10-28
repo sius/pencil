@@ -10,7 +10,7 @@
 ## Version 2.0.0
 - __DO NOT USE__ - critical bug leaks password hashes to stdout
 - bug fix utf-8 encoding
-- removes charset configuration property
+- the autoconfiguration Property charset has been removed
 
 ## Version 1.1.0
 - __DO NOT USE__ - UTF-8 encoding bug
