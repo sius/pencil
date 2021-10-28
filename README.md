@@ -1,4 +1,5 @@
 # Additional Spring Boot PasswordEncoders for Salted SHA encoded passwords
+The salted secure hash algorithms used in this library do not meet today's security standards (and are deprecated or no longer supported in Spring Boot). They should therefore not be used.The library only supports developers in dealing with legacy systems (LDAP) that still manage users with insecure passsword hashes and that cannot easily be taken out of production operation.
 
 The third-party Spring Boot starter library provides a custom DelegationPasswordEncoder Bean 
 for the following PasswordEncoder encode Ids and aliases:
@@ -31,6 +32,7 @@ Add `pencil-spring-boot-starter` dependency and inject the provided PasswordEnco
 > - longer passwords fail due an utf-8 encoding bug
 > - Version 2.0.0 leaks password hash to stdout
 > - Since Version 2.0.0 the autoconfiguration Property charset has been removed.
+> see [Changelog](./CHANGELOG.md)
 
 _field injection example_
 ```java
