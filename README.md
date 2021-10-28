@@ -1,7 +1,7 @@
 # Additional Spring Boot PasswordEncoders for Salted SHA encoded passwords
 The salted secure hash algorithms used in this library do not meet today's security standards (and are deprecated or no longer supported in Spring Boot). They should therefore not be used.The library only supports developers in dealing with legacy systems (LDAP) that still manage users with insecure passsword hashes and that cannot easily be taken out of production operation.
 
-The third-party Spring Boot starter library provides a custom DelegationPasswordEncoder Bean 
+The third-party Spring Boot starter library provides a custom DelegatingPasswordEncoder Bean 
 for the following PasswordEncoder encode Ids and aliases:
 
 - bcrypt (`org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder`)
