@@ -28,10 +28,9 @@ Add `pencil-spring-boot-starter` dependency and inject the provided PasswordEnco
 ```
 
 > __IMPORTANT__:  
-> Please do not use older versions than 2.0.1:
-> - longer passwords fail due an utf-8 encoding bug
+> __Please do not use older versions than 2.0.1__:
 > - Version 2.0.0 leaks password hash to stdout
-> - Since Version 2.0.0 the autoconfiguration Property charset has been removed.
+> - Version < 2.0.0 fails to match long passwords due an utf-8 encoding bug
 > see [Changelog](./CHANGELOG.md)
 
 _field injection example_
