@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -34,6 +35,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @SpringBootTest(classes = { TestApp.class })
 @EnableAutoConfiguration
+@TestPropertySource(
+    properties = {
+        "liquer.pencil.enabled=true"
+    }
+)
 public class PencilEnabledTest {
 
   @Autowired

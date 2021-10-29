@@ -22,9 +22,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
 @Component
 @ConfigurationProperties(prefix = "liquer.pencil")
 @ConditionalOnExpression("${liquer.pencil.enabled:true}")
@@ -32,15 +29,15 @@ public class PencilProperties {
 
   /**
    * Whether to enable the auto-configuration.
-   * (default: true)
+   * (default: false)
    */
-  private boolean enabled = true;
+  private boolean enabled = false;
 
   /**
-   * The default encode id.
+   * The default encodingId.
    * (default: bcrypt)
    */
-  private String defaultEncodeId = "bcrypt";
+  private String defaultEncodingId = "bcrypt";
 
   /**
    * Whether to base64 encode URL and file safe.
@@ -64,7 +61,7 @@ public class PencilProperties {
    * Whether to support unsalted passwords.
    * (default: true)
    */
-  private boolean supportUnsaltedPasswords = true;
+  private boolean allowUnsaltedPasswords = true;
 
   public boolean isEnabled() {
     return enabled;
@@ -98,19 +95,19 @@ public class PencilProperties {
     this.saltSize = saltSize;
   }
 
-  public String getDefaultEncodeId() {
-    return defaultEncodeId;
+  public String getDefaultEncodingId() {
+    return defaultEncodingId;
   }
 
-  public void setDefaultEncodeId(String defaultEncodeId) {
-    this.defaultEncodeId = defaultEncodeId;
+  public void setDefaultEncodingId(String defaultEncodingId) {
+    this.defaultEncodingId = defaultEncodingId;
   }
 
-  public boolean isSupportUnsaltedPasswords() {
-    return supportUnsaltedPasswords;
+  public boolean isAllowUnsaltedPasswords() {
+    return allowUnsaltedPasswords;
   }
 
-  public void setSupportUnsaltedPasswords(boolean supportUnsaltedPasswords) {
-    this.supportUnsaltedPasswords = supportUnsaltedPasswords;
+  public void setAllowUnsaltedPasswords(boolean allowUnsaltedPasswords) {
+    this.allowUnsaltedPasswords = allowUnsaltedPasswords;
   }
 }

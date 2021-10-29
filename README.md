@@ -1,12 +1,23 @@
-# Additional Spring Boot PasswordEncoders for Salted SHA encoded passwords
+# Preliminary note
+The salted secure hash algorithms used in this library do not meet today's security standards (
+and are deprecated or no longer supported in Spring Boot).
+They should therefore not be used.
+The library is intended only as support for developers
+who need to cope with legacy systems (LDAP) that still manage users
+with insecure password hashes and that cannot be easily removed
+from production use.
 
-The third-party Spring Boot starter library provides a custom DelegationPasswordEncoder Bean 
+Before using this library, it should therefore be checked whether a password rotation procedure is possible, so that password hashes can always be generated or updated with a hash algorithm that complies with the current security standards.
+
+## Additional Spring Boot PasswordEncoders for Salted SHA encoded passwords
+The third-party Spring Boot starter library provides a custom DelegatingPasswordEncoder Bean
 for the following PasswordEncoder encode Ids and aliases:
 
 - bcrypt (`org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder`)
 - scrypt (`org.springframework.security.crypto.scrypt.SCryptPasswordEncoder`)
 - pbkdf2 (`org.springframework.security.crypto.password.Pbkdf2PasswordEncoder`)
-- ldap, SHA, SSHA (SSHA1, SSHA-1) (`LdapShaPasswordEncoder` compatible implementation of the legacy/non secureSalted Secure Hash Algorithm)
+- XOR, ldap, SHA, SSHA (SSHA1, SSHA-1) (`LdapShaPasswordEncoder` compatible implementation of the legacy/non secureSalted Secure Hash Algorithm)
+- SHA224 (SHA-224), SHA256 (SHA-256), SHA384 (SHA-384), SHA512 (SHA-512)
 - SSHA224 (SSHA-224), SSHA256 (SSHA-256), SSHA384 (SSHA-384), SSHA512 (SSHA-512)
 
 The default PasswordEncoder for encoding is `BCryptPasswordEncoder`, 
@@ -42,13 +53,22 @@ private PasswordEncoder passwordEncoder;
 
 ```
 
-The auto-configuration and thus the loading of the provided passwordEncoder Bean 
-can be prevented by setting the environment property `liquer.pencil.enabled` to `false`.
+To avoid an unintentional security leak the auto-configuration and
+thus the loading of the provided `DelegatingPasswordEncoder` Bean
+must be enabled by setting the environment property `liquer.pencil.enabled` to `true`.
+
 
 ```yaml
 # application.yml
 
-liquer.pencil.enabled: false
+liquer.pencil.enabled: true
+
+```
+
+```yaml
+# application.properties
+
+liquer.pencil.enabled = true
 
 ```
 
@@ -57,11 +77,37 @@ liquer.pencil.enabled: false
 ```yaml
 liquer:
   pencil:
-    enabled: true # (default true)
-    default-encode-id: SSHA512 # The default encode id for encoding passwords. (default: bcrypt)
+    enabled: false # (default false)
+    default-encoding-id: SSHA512 # The default encode id for encoding passwords. (default: bcrypt)
     uf-safe: false # Whether to base64 encode password hashes URL and file safe. (default: false)
     no-padding: false # Whether to base64 encode password hashes without padding. (default: false)
     salt-size: 8 # The salt size in bytes. (default: 8)
+    allow-unsalted-passwords: true
 ```
 
-Use custom encoding identifier {SSHA512}, {SSHA-512} ... on direct PasswordEncoder construction.
+## Create a customized DelegatingPasswordEncoder
+
+[CustomLegacyPasswordEncoderConfig.java](./pencil-tests/src/test/java/io/liquer/pencil/autoconfigure/CustomLegacyPasswordEncoderConfig.java)
+
+```java
+@Profile("legacy")
+@Configuration
+public class CustomLegacyPasswordEncoderConfig {
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+
+        final Map<String, PasswordEncoder> encoders = new HashMap<>();
+        final BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        encoders.put("bcrypt", bcrypt);
+        encoders.put("SHA", new SSHAPasswordEncoder(KeyGenerators.secureRandom(0)));
+        encoders.put("SSHA", new SSHAPasswordEncoder());
+        encoders.put("SSHA512", new SSHA512PasswordEncoder());
+        encoders.put("xor", new XORPasswordEncoder().withIterations(10));
+
+        final DelegatingPasswordEncoder ret = new DelegatingPasswordEncoder("bcrypt", encoders);
+        ret.setDefaultPasswordEncoderForMatches(bcrypt);
+        return ret;
+    }
+}
+```

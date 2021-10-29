@@ -111,7 +111,7 @@ public final class PencilPasswordEncoderFactory {
     encoders.put(SSHA_512, ssha512);
 
 
-    if (pencilProperties.isSupportUnsaltedPasswords()) {
+    if (pencilProperties.isAllowUnsaltedPasswords()) {
 
       final BytesKeyGenerator unsaltedGenerator =
           KeyGenerators.secureRandom(0);
@@ -155,12 +155,12 @@ public final class PencilPasswordEncoderFactory {
     }
 
 
-    final boolean containsKey = encoders.containsKey(pencilProperties.getDefaultEncodeId());
+    final boolean containsKey = encoders.containsKey(pencilProperties.getDefaultEncodingId());
     final PasswordEncoder defaultPasswordEncoder = containsKey
-            ? encoders.get(pencilProperties.getDefaultEncodeId())
+            ? encoders.get(pencilProperties.getDefaultEncodingId())
             : bcrypt;
     final String defaultEncodeId = containsKey
-            ? pencilProperties.getDefaultEncodeId()
+            ? pencilProperties.getDefaultEncodingId()
             : "bcrypt";
     final DelegatingPasswordEncoder ret = new DelegatingPasswordEncoder(defaultEncodeId, encoders);
     ret.setDefaultPasswordEncoderForMatches(defaultPasswordEncoder);
