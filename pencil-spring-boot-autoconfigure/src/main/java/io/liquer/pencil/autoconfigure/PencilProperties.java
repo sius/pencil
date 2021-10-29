@@ -60,6 +60,12 @@ public class PencilProperties {
    */
   private int saltSize = 8;
 
+  /**
+   * Whether to support unsalted passwords.
+   * (default: true)
+   */
+  private boolean supportUnsaltedPasswords = true;
+
   public boolean isEnabled() {
     return enabled;
   }
@@ -98,5 +104,13 @@ public class PencilProperties {
 
   public void setDefaultEncodeId(String defaultEncodeId) {
     this.defaultEncodeId = defaultEncodeId;
+  }
+
+  public boolean isSupportUnsaltedPasswords() {
+    return supportUnsaltedPasswords;
+  }
+
+  public void setSupportUnsaltedPasswords(boolean supportUnsaltedPasswords) {
+    this.supportUnsaltedPasswords = supportUnsaltedPasswords;
   }
 }

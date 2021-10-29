@@ -22,20 +22,76 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.security.crypto.keygen.KeyGenerators;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class XORPasswordEncoderTest {
 
+  @Test
+  void sanitizeIterations() {
+    WithIterations sanitizer =
+        new XORPasswordEncoder();
+
+    final int expected = 1;
+    final int actual = sanitizer.sanitizeIterations(-100);
+
+    Assertions.assertEquals(expected, actual);
+  }
+
+
+  @Test
+  void sanitizeEncodingId() {
+    WithEncodingId sanitizer =
+        new XORPasswordEncoder();
+
+    final String expected = "xor";
+    final String actual = sanitizer.sanitizeEncodingId("([xor}}}");
+
+    Assertions.assertEquals(expected, actual);
+  }
+
+  @Test
+  void without_EncodingId() {
+    PasswordEncoder encoder = new XORPasswordEncoder();
+    final String actual = encoder.encode("test");
+    Assertions.assertFalse(actual.startsWith("{xor}"));
+
+  }
+
+  @Test
+  void with_xor_EncodingId() {
+    PasswordEncoder encoder =
+        new XORPasswordEncoder().withEncodingId();
+    final String actual = encoder.encode("test");
+    Assertions.assertTrue(actual.startsWith("{xor}"));
+
+  }
+
+  @Test
+  void with_custom_EncodingId() {
+    PasswordEncoder encoder =
+        new XORPasswordEncoder().withEncodingId("custom");
+    final String actual = encoder.encode("test");
+    Assertions.assertTrue(actual.startsWith("{custom}"));
+  }
 
   @ParameterizedTest(name = "password {0} should match default encoded password {1}")
   @CsvSource({
-      "T         , {xor}Cw==            ",
-      "Te        , {xor}Czo=            ",
-      "Tes       , {xor}Czos            ",
-      "Test      , {xor}CzosKw==        ",
-      "Test!     , {xor}CzosK34=        ",
-      "Test:äöüß#, {xor}CzosK2W7qaOAfA==",
+      "T         , {xor}Cw==                 ",
+      "Te        , {xor}Czo=                 ",
+      "Tes       , {xor}Czos                 ",
+      "Test      , {xor}CzosKw==             ",
+      "Test!     , {xor}CzosK34=             ",
+      "Test:äöüß#, {xor}CzosK2Wc+5zpnOOcwHw= ",
+      "T         ,      Cw==                 ",
+      "Te        ,      Czo=                 ",
+      "Tes       ,      Czos                 ",
+      "Test      ,      CzosKw==             ",
+      "Test!     ,      CzosK34=             ",
+      "Test:äöüß#,      CzosK2Wc+5zpnOOcwHw= ",
   })
   void password_should_match_default_encoded_password(CharSequence rawPassword, String encodedPassword) {
     final XORPasswordEncoder enc = new XORPasswordEncoder();
@@ -44,23 +100,37 @@ public class XORPasswordEncoderTest {
 
   @ParameterizedTest(name = "password {0} should match default encoded password {1}")
   @CsvSource({
-      "T         , {xor}Cw==            ",
-      "Te        , {xor}Czo=            ",
-      "Tes       , {xor}Czos            ",
-      "Test      , {xor}CzosKw==        ",
-      "Test!     , {xor}CzosK34=        ",
-      "Test:äöüß#, {xor}CzosK2W7qaOAfA==",
+      "T         , {xor}Cw==                 , ISO-8859-1",
+      "Te        , {xor}Czo=                 , ISO-8859-1",
+      "Tes       , {xor}Czos                 , ISO-8859-1",
+      "Test      , {xor}CzosKw==             , ISO-8859-1",
+      "Test!     , {xor}CzosK34=             , ISO-8859-1",
+      "Test:äöüß#, {xor}CzosK2W7qaOAfA==     , ISO-8859-1",
+      "Test:äöüß#, {xor}CzosK2Wc+5zpnOOcwHw= , UTF-8     ",
+      "T         ,      Cw==                 , ISO-8859-1",
+      "Te        ,      Czo=                 , ISO-8859-1",
+      "Tes       ,      Czos                 , ISO-8859-1",
+      "Test      ,      CzosKw==             , ISO-8859-1",
+      "Test!     ,      CzosK34=             , ISO-8859-1",
+      "Test:äöüß#,      CzosK2W7qaOAfA==     , ISO-8859-1",
+      "Test:äöüß#,      CzosK2Wc+5zpnOOcwHw= , UTF-8     ",
   })
-  void password_should_match_encoded_password(CharSequence rawPassword, String encodedPassword) {
-    final XORPasswordEncoder enc = new XORPasswordEncoder("_", StandardCharsets.ISO_8859_1);
+  void password_should_match_encoded_password(CharSequence rawPassword, String encodedPassword, Charset charset) {
+    final XORPasswordEncoder enc = new XORPasswordEncoder(charset);
     Assertions.assertTrue(enc.matches(rawPassword, encodedPassword));
   }
 
   @Test
   void empty_password_should_match_encoded_password() {
-    final String emptyPassword = "";
-    final XORPasswordEncoder enc = new XORPasswordEncoder("_", StandardCharsets.ISO_8859_1);
-    final String encodedPassword = enc.encode(emptyPassword);
-    Assertions.assertTrue(enc.matches(emptyPassword, encodedPassword));
+    final XORPasswordEncoder enc = new XORPasswordEncoder();
+    final String encodedPassword = enc.encode("");
+    Assertions.assertTrue(enc.matches("", encodedPassword));
+  }
+
+  @Test
+  void null_password_should_not_match() {
+    final XORPasswordEncoder enc = new XORPasswordEncoder();
+    final String encodedPassword = enc.encode(null);
+    Assertions.assertFalse(enc.matches(null, encodedPassword));
   }
 }

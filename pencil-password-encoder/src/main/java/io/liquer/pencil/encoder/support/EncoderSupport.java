@@ -22,11 +22,22 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Internal support class with common helper methods.
  */
 public final class EncoderSupport {
+
+  /**
+   * Convert a CharSequence to a byte array
+   * with UTF-8 code points.
+   * @param seq the CharSequence
+   * @return the byte array representation
+   */
+  public static byte[] encode(CharSequence seq) {
+    return encode(seq, StandardCharsets.UTF_8);
+  }
 
   /**
    * Convert a CharSequence to a byte array
@@ -44,6 +55,19 @@ public final class EncoderSupport {
     } catch (CharacterCodingException e) {
       throw new IllegalArgumentException("Encoding failed", e);
     }
+  }
+
+  public static boolean equals(byte[] expected, byte[] challenge) {
+    boolean matches = false;
+    if (expected != null && challenge != null && expected.length == challenge.length) {
+      for (int i = 0; i < expected.length; i++) {
+        matches = (expected[i] == challenge[i]);
+        if (!matches) {
+          break;
+        }
+      }
+    }
+    return matches;
   }
 
   /**

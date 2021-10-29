@@ -18,93 +18,103 @@
 
 package io.liquer.pencil.encoder.support;
 
-import java.util.Set;
-
 public final class EPSplit {
 
-  private byte[] salt = null;
-  private byte[] hash = null;
-  private boolean identifierSupported = false;
-  private String identifier = null;
-  private boolean prefixedSalt = true;
+  private byte[] hash;
+  private byte[] strippedHash;
+  private byte[] salt;
+  private int saltSize;
+  private String encodingId;
 
   /**
-   * An internal helper to split encoded passwords into their parts
-   * (identifier/encodId, hash, salt).
-   * @param encodedPassword the encoded pssword
-   * @param supportedIdentifiers a set with case sensitive encode identifiers
+   * A helper to split encoded passwords into their parts
+   * (identifier with encodingId, hash, salt).
+   *
+   * @param encodedPassword the encoded password
    * @param hashSize the algorithm specific hashSize
    */
-  public EPSplit(
-      String encodedPassword,
-      Set<String> supportedIdentifiers, int hashSize) {
-    if (encodedPassword == null
-        || supportedIdentifiers == null
-        || supportedIdentifiers.isEmpty()) {
+  public EPSplit(String encodedPassword, int hashSize) {
+    encodingId = "";
+    hash = new byte[0];
+    strippedHash = new byte[0];
+    salt = new byte[0];
+    if (encodedPassword == null) {
       return;
     }
     final int start = encodedPassword.indexOf('{');
     final int end = encodedPassword.indexOf('}');
+    encodingId = (start == 0 && end >= 1)
+        ? encodedPassword.substring(start+1, end).trim()
+        : "";
 
-    if (start == 0 && end >= 1) {
-      this.identifier =
-          encodedPassword
-              .substring(start, end + 1)
-              .trim();
-      this.identifierSupported =
-          supportedIdentifiers.contains(this.identifier);
-    } else {
-      this.identifier = "";
-      this.identifierSupported = ((start + end) != -1);
-    }
-    if (identifierSupported) {
-      if (encodedPassword.length() > end + 1) {
-        final byte[] raw = Base64Support
-            .base64Decode(encodedPassword.substring(end + 1));
-        final int saltSize = raw.length - hashSize;
-        hash = new byte[hashSize];
-        salt = new byte[Math.max(saltSize, 0)];
-        System.arraycopy(raw, 0, hash, 0, hashSize);
-        if (saltSize > 0) {
-          System.arraycopy(raw, hashSize, salt, 0, saltSize);
-        }
-      } else {
-        hash = new byte[0];
-        salt = new byte[0];
+    if (encodedPassword.length() > end + 1) {
+      hash = Base64Support
+          .base64Decode(encodedPassword.substring(end + 1));
+      saltSize = hash.length - hashSize;
+      strippedHash = new byte[hashSize];
+      salt = new byte[Math.max(saltSize, 0)];
+      System.arraycopy(hash, 0, strippedHash, 0, hashSize);
+      if (saltSize > 0) {
+        System.arraycopy(hash, hashSize, salt, 0, saltSize);
       }
     }
   }
 
   /**
-   * Get the identifier part.
-   * @return the identifier part
+   * Get the identifier part <code>"{<encodingId>}"</code> or an empty <code>String</code>.
+   *
+   * @return the identifier part or an empty <code>String</code>
    */
   public String getIdentifier() {
-    return identifier;
+
+    return (encodingId.isEmpty())
+        ? ""
+        : "{" + encodingId + "}";
   }
 
   /**
-   * Is identifier supported.
-   * @return true if identifier  is supported
+   * Get the encodingId from the identifier part or an empty <code>String</code>.
+   *
+   * @return the encodingId or an empty <code>String</code>
    */
-  public boolean isIdentifierSupported() {
-    return identifierSupported;
-  }
-
-  public boolean isPrefixedSalt() {
-    return prefixedSalt;
+  public String getEncodingId() {
+    return this.encodingId;
   }
 
   /**
-   * Get the salt part.
-   * @return the salt part
+   * Get a copy of the salt part or an empty byte array.
+   *
+   * @return a copy of the salt part or an empty byte array
    */
   public byte[] getSalt() {
-    byte[] ret = null;
-    if (salt != null) {
-      ret = new byte[salt.length];
-      System.arraycopy(salt, 0, ret, 0, ret.length);
-    }
-    return ret;
+    return salt.clone();
+  }
+
+  /**
+   * Get the calculated salt size.
+   * A negative value indicates an invalid hash.
+   *
+   * @return the calculated salt size
+   */
+  public int getSaltSize() {
+    return saltSize;
+  }
+
+  /**
+   * Get a copy of the stripped hash (without salt) or an empty byte array.
+   *
+   * @return a copy of the stripped hash (without salt) or an empty byte array
+   */
+  public byte[] getStrippedHash() {
+    return strippedHash.clone();
+  }
+
+  /**
+   * Get a copy of the full hash (hash + salt), the Cipher or an empty byte array.
+   *
+   * @return a copy of the full hash (hash + salt), the Cipher or an empty byte array
+   */
+  public byte[] getHashOrCipher() {
+    return hash.clone();
   }
 }

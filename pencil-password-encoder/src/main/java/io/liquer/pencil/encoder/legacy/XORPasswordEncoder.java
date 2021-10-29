@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Uwe Schumacher.
+ * Copyright (c) 2021 Uwe Schumacher.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,130 +18,168 @@
 
 package io.liquer.pencil.encoder.legacy;
 
-import static io.liquer.pencil.encoder.support.EncoderSupport.isNullOrEmpty;
-
 import io.liquer.pencil.encoder.support.Base64Support;
 import io.liquer.pencil.encoder.support.EPSplit;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import io.liquer.pencil.encoder.support.EncoderSupport;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+
 /**
- * The additive XOR Cipher to support legacy environments
+ * An additive XOR Cipher to support legacy environments.
+ * The created cipher depends on the used Charset.
+ *
  * (e.g. WebSphere, Liberty).
  */
-public final class XORPasswordEncoder implements PasswordEncoder {
-
-  public static final String DEFAULT_IDENTIFIER = "{xor}";
+public final class XORPasswordEncoder implements PencilPasswordEncoder {
 
   /**
    * WebSphere default Key: "_".
    */
   public static final String DEFAULT_UNREPEATED_KEY = "_";
 
-  private final Set<String> supportedIdentifiers;
-
-  private final String identifier;
-  private final int unrepeatedKeySize;
   private final CharSequence unrepeatedKey;
-  private final Charset charset;
   private final boolean ufSafe;
   private final boolean noPadding;
+  private final Charset charset;
+
+  private String encodingId;
+  private int iterations;
 
   /**
    * Create an additive XOR Cipher PasswordEncoder
-   * with the default unrepeated key "_" and the
-   * default ISO 8859-1 Charset.
+   * with the default unrepeated key "_", an UTF_8 Charset and
+   * a single iteration.
    */
   public XORPasswordEncoder() {
-    this(DEFAULT_UNREPEATED_KEY, StandardCharsets.ISO_8859_1);
+    this(DEFAULT_UNREPEATED_KEY, StandardCharsets.UTF_8, 1, false, false);
   }
 
   /**
    * Create an additive XOR Cipher PasswordEncoder
-   * with the specified unrepeatedKey.
+   * with the specified unrepeatedKey, an UTF-8 Charset and
+   * a single iteration.
    * @param unrepeatedKey the unrepeated key (default: "_")
-   * @param charset custom Charset (default: ISO 8859-1)
    */
-  public XORPasswordEncoder(CharSequence unrepeatedKey, Charset charset) {
-    this(
-        new HashSet<>(Arrays.asList(DEFAULT_IDENTIFIER)),
-        DEFAULT_IDENTIFIER,
-        unrepeatedKey,
-        charset,
-        false,
-        false);
+  public XORPasswordEncoder(CharSequence unrepeatedKey) {
+    this(unrepeatedKey, StandardCharsets.UTF_8, 1, false, false);
   }
 
   /**
-   * Creates a PasswordEncoder with a custom encoding identifier,
-   * e.g.: {xor} ...
-   * and base64 encoding options.
-   * @param supportedIdentifiers the supported match identifiers
-   * @param identifier the custom identifier (default: "{xor}")
+   * Create an additive XOR Cipher PasswordEncoder
+   * with the specified charset and the default unrepeated key "_".
+   *
+   * @param charset
+   */
+  public XORPasswordEncoder(Charset charset) {
+
+    this(DEFAULT_UNREPEATED_KEY, charset, 1, false, false);
+  }
+
+  /**
+   * Create an additive XOR Cipher PasswordEncoder
+   * with the specified unrepeatedKey and charset.
+   *
+   *
    * @param unrepeatedKey the unrepeated key (default: "_")
-   * @param charset custom Charset (default: ISO 8859-1)
+   * @param charset
+   */
+  public XORPasswordEncoder(CharSequence unrepeatedKey, Charset charset) {
+    this(unrepeatedKey, charset, 1, false, false);
+  }
+
+  /**
+   * Create an additive XOR Cipher PasswordEncoder
+   * with the specified unrepeatedKey and base64 encoding options.
+   * The created cipher depends on the used Charset.
+   *
+   * @param unrepeatedKey the unrepeated key (default: "_")
+   * @param charset  the specified Charset (default: UTF-8)
+   * @param iterations  the specified xor iterations (default: 1)
    * @param ufSafe url and file safe encoding if true
    * @param noPadding drop trailing base64 padding ('=') if true
    */
   public XORPasswordEncoder(
-      Set<String> supportedIdentifiers,
-      String identifier,
       CharSequence unrepeatedKey,
       Charset charset,
+      int iterations,
       boolean ufSafe,
       boolean noPadding) {
-    this.supportedIdentifiers = supportedIdentifiers;
-    this.identifier = identifier == null ? DEFAULT_IDENTIFIER : identifier;
     this.unrepeatedKey = unrepeatedKey == null ? DEFAULT_UNREPEATED_KEY : unrepeatedKey;
-    this.unrepeatedKeySize = unrepeatedKey.length();
-    this.charset = charset == null ? StandardCharsets.ISO_8859_1 : charset;
+    this.charset = charset;
+    this.iterations = Math.max(1, iterations);
     this.ufSafe = ufSafe;
     this.noPadding = noPadding;
   }
 
+  /**
+   * Encode the raw password and return
+   * the encoded password without encodingId identifier
+   * or with encodingId identifier if specified with <code>{@link #withEncodingId(String)}</code>.
+   *
+   * @param rawPassword plain text password
+   * @return b64(xor(rawPassword, unrepeatedKey))) or
+   *          {encodingId}b64(xor(rawPassword, unrepeatedKey)))
+   */
   @Override
   public String encode(CharSequence rawPassword) {
+
     if (rawPassword == null) {
       return null;
     }
-    return identifier + b64(xor(EncoderSupport.encode(rawPassword, charset), EncoderSupport.encode(unrepeatedKey, charset)));
+    return (EncoderSupport.isNullOrEmpty(encodingId))
+        ? b64(xor(rawPassword, unrepeatedKey))
+        : String.format("{%s}%s", encodingId, b64(xor(rawPassword, unrepeatedKey)));
   }
 
   @Override
   public boolean matches(CharSequence rawPassword, String encodedPassword) {
-    if (rawPassword == null && encodedPassword == null) {
+    if (rawPassword == null || encodedPassword == null) {
       return false;
     }
 
-    if (isNullOrEmpty(encodedPassword)) {
-      return false;
-    }
+    final EPSplit split = new EPSplit(encodedPassword, 0);
 
-    final EPSplit split = new EPSplit(encodedPassword, supportedIdentifiers, 0);
-    if (!split.isIdentifierSupported()) {
-      return false;
-    }
+    final byte[] challenge =  xor(rawPassword, unrepeatedKey);
 
-    final String challenge =  split.getIdentifier()
-        + b64(xor(EncoderSupport.encode(rawPassword, charset), EncoderSupport.encode(unrepeatedKey, charset)));
-    return encodedPassword.equals(challenge);
+    return MessageDigest.isEqual(split.getHashOrCipher(), challenge);
   }
 
   private String b64(byte[] val) {
     return Base64Support.base64Encode(val, ufSafe, noPadding);
   }
 
-  private static byte[] xor(byte[] rawPassword, byte[] repeatingKey) {
-    byte[] ret = new byte[rawPassword.length];
-    for (int i = 0; i < ret.length; i++) {
-      ret[i] = (byte) (rawPassword[i] ^ repeatingKey[i % repeatingKey.length]);
+  private byte[] xor(CharSequence rawPassword, CharSequence repeatingKey) {
+    byte[] rawPasswordBytes = EncoderSupport.encode(rawPassword, charset);
+    final byte[] repeatingKeyBytes = EncoderSupport.encode(repeatingKey, charset);
+    final byte[] ret = new byte[rawPasswordBytes.length];
+
+    for (int next = 0; next < iterations; next++) {
+      for (int i = 0; i < ret.length; i++) {
+        ret[i] = (byte) (rawPasswordBytes[i] ^ repeatingKeyBytes[i % repeatingKeyBytes.length]);
+      }
+      rawPasswordBytes = ret.clone();
     }
-    return ret;
+    return ret.clone();
+  }
+
+  @Override
+  public PencilPasswordEncoder withEncodingId() {
+    return withEncodingId(EncodingIds.XOR);
+  }
+
+  @Override
+  public PencilPasswordEncoder withEncodingId(String encodingId) {
+    this.encodingId = sanitizeEncodingId(encodingId);
+    return this;
+  }
+
+  @Override
+  public PencilPasswordEncoder withIterations(int iterations) {
+    this.iterations = sanitizeIterations(iterations);
+    return this;
   }
 }

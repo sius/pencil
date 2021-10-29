@@ -27,9 +27,6 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
 /**
  * @author sius
  */
@@ -48,8 +45,6 @@ public class AutoConfigurationTest {
       Assertions.assertThat(context).hasSingleBean(PasswordEncoder.class);
       Assertions.assertThat(context.getBean(PasswordEncoder.class))
           .isSameAs(context.getBean(MyConfiguration.class).passwordEncoder);
-      Assertions.assertThat(StandardCharsets.UTF_8)
-              .isSameAs(context.getBean(MyConfiguration.class).charset);
     });
   }
 
@@ -80,36 +75,36 @@ public class AutoConfigurationTest {
       Assertions.assertThat(context).hasSingleBean(PasswordEncoder.class);
       Assertions.assertThat(context.getBean(PasswordEncoder.class))
               .isSameAs(context.getBean(MyConfiguration.class).passwordEncoder);
-      Assertions.assertThat(StandardCharsets.UTF_8)
-              .isSameAs(context.getBean(MyConfiguration.class).charset);
       Assertions.assertThat(false)
               .isSameAs(context.getBean(MyConfiguration.class).ufSafe);
       Assertions.assertThat(false)
               .isSameAs(context.getBean(MyConfiguration.class).noPadding);
       Assertions.assertThat(8)
               .isSameAs(context.getBean(MyConfiguration.class).saltSize);
+      Assertions.assertThat(true)
+          .isSameAs(context.getBean(MyConfiguration.class).supportUnsaltedPasswords);
     });
   }
 
   @Test
   void enabled_passwordEncoderBean_should_be_loaded_with_custom_properties() {
     this.contextRunner
-            .withPropertyValues("liquer.pencil.charset=ISO-8859-1")
             .withPropertyValues("liquer.pencil.uf-safe=true")
             .withPropertyValues("liquer.pencil.no-padding=true")
             .withPropertyValues("liquer.pencil.salt-size=16")
+            .withPropertyValues("liquer.pencil.support-unsalted-passwords=false")
             .withUserConfiguration(MyConfiguration.class).run((context) -> {
       Assertions.assertThat(context).hasSingleBean(PasswordEncoder.class);
       Assertions.assertThat(context.getBean(PasswordEncoder.class))
               .isSameAs(context.getBean(MyConfiguration.class).passwordEncoder);
-      Assertions.assertThat(StandardCharsets.ISO_8859_1)
-              .isSameAs(context.getBean(MyConfiguration.class).charset);
       Assertions.assertThat(true)
               .isSameAs(context.getBean(MyConfiguration.class).ufSafe);
       Assertions.assertThat(true)
               .isSameAs(context.getBean(MyConfiguration.class).noPadding);
       Assertions.assertThat(16)
               .isSameAs(context.getBean(MyConfiguration.class).saltSize);
+      Assertions.assertThat(false)
+          .isSameAs(context.getBean(MyConfiguration.class).supportUnsaltedPasswords);
     });
   }
 
@@ -118,9 +113,6 @@ public class AutoConfigurationTest {
 
     @Autowired(required = false)
     private PasswordEncoder passwordEncoder;
-
-    @Value("${liquer.pencil.charset:UTF-8}")
-    private Charset charset;
 
     @Value("${liquer.pencil.uf-safe:false}")
     private boolean ufSafe;
@@ -131,5 +123,7 @@ public class AutoConfigurationTest {
     @Value("${liquer.pencil.salt-size:8}")
     private int saltSize;
 
+    @Value("${liquer.pencil.support-unsalted-passwords:true}")
+    private boolean supportUnsaltedPasswords;
   }
 }

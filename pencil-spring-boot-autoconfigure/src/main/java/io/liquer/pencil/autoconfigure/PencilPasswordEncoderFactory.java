@@ -18,18 +18,19 @@
 
 package io.liquer.pencil.autoconfigure;
 
-import io.liquer.pencil.encoder.SSHA224PasswordEncoder;
-import io.liquer.pencil.encoder.SSHA256PasswordEncoder;
-import io.liquer.pencil.encoder.SSHA384PasswordEncoder;
-import io.liquer.pencil.encoder.SSHA512PasswordEncoder;
-import io.liquer.pencil.encoder.SSHAPasswordEncoder;
 import java.util.HashMap;
 import java.util.Map;
+
+import io.liquer.pencil.encoder.legacy.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.keygen.BytesKeyGenerator;
+import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
+
+import static io.liquer.pencil.encoder.legacy.EncodingIds.*;
 
 /**
  * Custom Factory for Spring Boot PasswordEncoder
@@ -64,56 +65,95 @@ public final class PencilPasswordEncoderFactory {
   static PasswordEncoder passwordEncoder(final PencilProperties pencilProperties) {
     final Map<String, PasswordEncoder> encoders = new HashMap<>();
     final BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-    final String EMPTY = "";
+
     encoders.put("bcrypt", bcrypt);
     encoders.put("scrypt", new SCryptPasswordEncoder());
     encoders.put("pbkdf2", new Pbkdf2PasswordEncoder());
 
+    final int iterations = 1;
+    final BytesKeyGenerator saltGenerator =
+        KeyGenerators.secureRandom(pencilProperties.getSaltSize());
 
-    final PasswordEncoder ldap = new SSHAPasswordEncoder(EMPTY,
-        0,
+    final PasswordEncoder ssha = new SSHAPasswordEncoder(
+        saltGenerator, iterations,
         pencilProperties.isUfSafe(),
         pencilProperties.isNoPadding());
-    encoders.put("ldap", ldap);
-    encoders.put("SHA", ldap);
-    encoders.put("SHA1", ldap);
-    encoders.put("SHA-1", ldap);
+    encoders.put(SSHA, ssha);
+    encoders.put(SSHA1, ssha);
+    encoders.put(SSHA_1, ssha);
 
-    final PasswordEncoder ssha = new SSHAPasswordEncoder(EMPTY,
-            pencilProperties.getSaltSize(),
+    final PasswordEncoder ssha224 = new SSHA224PasswordEncoder(
+        saltGenerator, iterations,
+        pencilProperties.isUfSafe(),
+        pencilProperties.isNoPadding());
+    encoders.put(SSHA224, ssha224);
+    encoders.put(SSHA_224, ssha224);
+
+    final PasswordEncoder ssha256 = new SSHA256PasswordEncoder(
+          saltGenerator, iterations,
+          pencilProperties.isUfSafe(),
+          pencilProperties.isNoPadding());
+    encoders.put(SSHA256, ssha256);
+    encoders.put(SSHA_256, ssha256);
+
+    final PasswordEncoder ssha384 = new SSHA384PasswordEncoder(
+            saltGenerator, iterations,
             pencilProperties.isUfSafe(),
             pencilProperties.isNoPadding());
-    encoders.put("SSHA", ssha);
-    encoders.put("SSHA1", ssha);
-    encoders.put("SSHA-1", ssha);
+    encoders.put(SSHA384, ssha384);
+    encoders.put(SSHA_384, ssha384);
 
-    final PasswordEncoder ssha224 = new SSHA224PasswordEncoder(EMPTY,
-            pencilProperties.getSaltSize(),
+    final PasswordEncoder ssha512 = new SSHA512PasswordEncoder(
+            saltGenerator, iterations,
             pencilProperties.isUfSafe(),
             pencilProperties.isNoPadding());
-    encoders.put("SSHA224", ssha224);
-    encoders.put("SSHA-224", ssha224);
+    encoders.put(SSHA512, ssha512);
+    encoders.put(SSHA_512, ssha512);
 
-    final PasswordEncoder ssha256 = new SSHA256PasswordEncoder(EMPTY,
-            pencilProperties.getSaltSize(),
-            pencilProperties.isUfSafe(),
-            pencilProperties.isNoPadding());
-    encoders.put("SSHA256", ssha256);
-    encoders.put("SSHA-256", ssha256);
 
-    final PasswordEncoder ssha384 = new SSHA384PasswordEncoder(EMPTY,
-            pencilProperties.getSaltSize(),
-            pencilProperties.isUfSafe(),
-            pencilProperties.isNoPadding());
-    encoders.put("SSHA384", ssha384);
-    encoders.put("SSHA-384", ssha384);
+    if (pencilProperties.isSupportUnsaltedPasswords()) {
 
-    final PasswordEncoder ssha512 = new SSHA512PasswordEncoder(EMPTY,
-            pencilProperties.getSaltSize(),
-            pencilProperties.isUfSafe(),
-            pencilProperties.isNoPadding());
-    encoders.put("SSHA512", ssha512);
-    encoders.put("SSHA-512", ssha512);
+      final BytesKeyGenerator unsaltedGenerator =
+          KeyGenerators.secureRandom(0);
+
+      final PasswordEncoder ldap = new SSHAPasswordEncoder(
+          unsaltedGenerator, iterations,
+          pencilProperties.isUfSafe(),
+          pencilProperties.isNoPadding());
+      encoders.put(LDAP, ldap);
+      encoders.put(SHA, ldap);
+      encoders.put(SHA1, ldap);
+      encoders.put(SHA_1, ldap);
+
+      final PasswordEncoder sha224 = new SSHA224PasswordEncoder(
+          unsaltedGenerator, iterations,
+          pencilProperties.isUfSafe(),
+          pencilProperties.isNoPadding());
+      encoders.put(SHA224, sha224);
+      encoders.put(SHA_224, sha224);
+
+      final PasswordEncoder sha256 = new SSHA256PasswordEncoder(
+          unsaltedGenerator, iterations,
+          pencilProperties.isUfSafe(),
+          pencilProperties.isNoPadding());
+      encoders.put(SHA256, sha256);
+      encoders.put(SHA_256, sha256);
+
+      final PasswordEncoder sha384 = new SSHA384PasswordEncoder(
+          unsaltedGenerator, iterations,
+          pencilProperties.isUfSafe(),
+          pencilProperties.isNoPadding());
+      encoders.put(SHA384, sha384);
+      encoders.put(SHA_384, sha384);
+
+      final PasswordEncoder sha512 = new SSHA512PasswordEncoder(
+          unsaltedGenerator, iterations,
+          pencilProperties.isUfSafe(),
+          pencilProperties.isNoPadding());
+      encoders.put(SHA512, ssha512);
+      encoders.put(SHA_512, ssha512);
+    }
+
 
     final boolean containsKey = encoders.containsKey(pencilProperties.getDefaultEncodeId());
     final PasswordEncoder defaultPasswordEncoder = containsKey
