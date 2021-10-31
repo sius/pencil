@@ -18,11 +18,13 @@
 
 package io.liquer.pencil.encoder.legacy;
 
+import io.liquer.pencil.EncodingIds;
+import io.liquer.pencil.encoder.LogSecurityAdvice;
+import io.liquer.pencil.encoder.PencilPasswordEncoder;
 import io.liquer.pencil.encoder.support.Base64Support;
 import io.liquer.pencil.encoder.support.EPSplit;
 
 import io.liquer.pencil.encoder.support.EncoderSupport;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -181,5 +183,15 @@ public final class XORPasswordEncoder implements PencilPasswordEncoder {
   public PencilPasswordEncoder withIterations(int iterations) {
     this.iterations = sanitizeIterations(iterations);
     return this;
+  }
+
+  @Override
+  public PencilPasswordEncoder withSecurityAdvice(boolean giveAdvice, LogSecurityAdvice securityAdvice) {
+    return null;
+  }
+
+  @Override
+  public PencilPasswordEncoder withSecurityAdvice(boolean giveAdvice) {
+    return null;
   }
 }

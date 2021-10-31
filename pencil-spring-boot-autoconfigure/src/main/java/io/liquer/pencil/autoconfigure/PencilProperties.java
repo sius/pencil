@@ -63,6 +63,14 @@ public class PencilProperties {
    */
   private boolean allowUnsaltedPasswords = true;
 
+
+  /**
+   * Whether to give a security advice when an unsecure
+   * password hash has been matched.
+   * (default: false)
+   */
+  private boolean securityAdvice = false;
+
   public boolean isEnabled() {
     return enabled;
   }
@@ -109,5 +117,11 @@ public class PencilProperties {
 
   public void setAllowUnsaltedPasswords(boolean allowUnsaltedPasswords) {
     this.allowUnsaltedPasswords = allowUnsaltedPasswords;
+  }
+  public boolean isSecurityAdvice() {
+    return securityAdvice;
+  }
+  public void setSecurityAdvice(boolean securityAdvice) {
+    this.securityAdvice = securityAdvice;
   }
 }

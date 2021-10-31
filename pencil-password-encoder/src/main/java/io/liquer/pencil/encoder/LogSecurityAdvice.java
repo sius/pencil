@@ -16,10 +16,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package io.liquer.pencil.encoder.legacy;
+package io.liquer.pencil.encoder;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.slf4j.Logger;
 
-public interface PencilPasswordEncoder
-    extends PasswordEncoder, WithIterations, WithEncodingId {
+@FunctionalInterface public interface LogSecurityAdvice {
+    void log(Logger log, PasswordHashInfo info);
 }

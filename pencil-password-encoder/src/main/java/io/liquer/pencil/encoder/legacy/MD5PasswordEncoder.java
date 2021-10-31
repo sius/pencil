@@ -18,9 +18,10 @@
 
 package io.liquer.pencil.encoder.legacy;
 
+import io.liquer.pencil.EncodingIds;
+import io.liquer.pencil.encoder.PencilPasswordEncoder;
 import org.springframework.security.crypto.keygen.BytesKeyGenerator;
 import org.springframework.security.crypto.keygen.KeyGenerators;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Salted MD5 PasswordEncoder.
@@ -31,10 +32,10 @@ public final class MD5PasswordEncoder extends SaltedMessageDigestPasswordEncoder
 
   /**
    * Creates a PasswordEncoder using MD5 algorithm
-   * and a random 8 byte salt value.
+   * and a random 0 byte salt value.
    */
   public MD5PasswordEncoder() {
-    this(KeyGenerators.secureRandom(DEFAULT_KEY_LENGTH),1, false, false);
+    this(KeyGenerators.secureRandom(0),1, false, false);
   }
 
   /**

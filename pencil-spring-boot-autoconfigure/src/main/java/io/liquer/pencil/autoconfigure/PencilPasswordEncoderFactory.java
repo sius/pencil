@@ -30,7 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
-import static io.liquer.pencil.encoder.legacy.EncodingIds.*;
+import static io.liquer.pencil.EncodingIds.*;
 
 /**
  * Custom Factory for Spring Boot PasswordEncoder

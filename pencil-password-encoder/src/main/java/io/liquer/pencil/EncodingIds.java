@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package io.liquer.pencil.encoder.legacy;
+package io.liquer.pencil;
 
 public class EncodingIds {
 

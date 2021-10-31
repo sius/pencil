@@ -16,20 +16,29 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package io.liquer.pencil.encoder.legacy;
+package io.liquer.pencil.encoder;
 
-public interface WithIterations {
-
-    PencilPasswordEncoder withIterations(int iterations);
+public interface PasswordHashInfo {
 
     /**
-     * Ensures that at least 1 iteration will be used, e.g.:
-     * when a negative iteration number has been specified.
+     * Get the identifier part <code>"{<encodingId>}"</code> or an empty <code>String</code>.
      *
-     * @param iterations
-     * @return the PencilPasswordEncoder
+     * @return the identifier part or an empty <code>String</code>
      */
-    default int sanitizeIterations(int iterations) {
-        return Math.max(1, iterations);
-    }
+    String getIdentifier();
+
+    /**
+     * Get the encodingId from the identifier part or an empty <code>String</code>.
+     *
+     * @return the encodingId or an empty <code>String</code>
+     */
+    String getEncodingId();
+
+    /**
+     * Get the calculated salt size.
+     * A negative value indicates an invalid hash.
+     *
+     * @return the calculated salt size
+     */
+    int getSaltSize();
 }

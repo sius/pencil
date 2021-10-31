@@ -18,7 +18,9 @@
 
 package io.liquer.pencil.encoder.support;
 
-public final class EPSplit {
+import io.liquer.pencil.encoder.PasswordHashInfo;
+
+public final class EPSplit implements PasswordHashInfo {
 
   private byte[] hash;
   private byte[] strippedHash;

@@ -18,9 +18,10 @@
 
 package io.liquer.pencil.encoder.legacy;
 
+import io.liquer.pencil.EncodingIds;
+import io.liquer.pencil.encoder.PencilPasswordEncoder;
 import org.springframework.security.crypto.keygen.BytesKeyGenerator;
 import org.springframework.security.crypto.keygen.KeyGenerators;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Salted SHA-1 PasswordEncoder.

@@ -19,7 +19,8 @@
 package io.liquer.pencil.encoder.legacy;
 
 import io.liquer.pencil.encoder.TestHelper;
-import io.liquer.pencil.encoder.legacy.SSHA256PasswordEncoder;
+import io.liquer.pencil.encoder.WithEncodingId;
+import io.liquer.pencil.encoder.WithIterations;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.keygen.KeyGenerators;
