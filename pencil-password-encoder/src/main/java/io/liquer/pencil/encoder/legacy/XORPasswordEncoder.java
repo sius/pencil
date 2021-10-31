@@ -206,11 +206,6 @@ public final class XORPasswordEncoder implements PencilPasswordEncoder {
   }
 
   @Override
-  public PencilPasswordEncoder withSecurityAdvice(boolean giveAdvice) {
-    return withSecurityAdvice(giveAdvice, DEFAULT_SECURITY_ADVICE);
-  }
-
-  @Override
   public int getIterations() {
     return iterations;
   }

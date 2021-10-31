@@ -138,11 +138,6 @@ abstract class SaltedMessageDigestPasswordEncoder implements PencilPasswordEncod
     return this;
   }
 
-  @Override
-  public PencilPasswordEncoder withSecurityAdvice(boolean giveAdvice) {
-    return withSecurityAdvice(giveAdvice, DEFAULT_SECURITY_ADVICE);
-  }
-
   /**
    * Encode the raw password and return
    * the encoded password without encodingId identifier

@@ -31,5 +31,7 @@ public interface WithSecurityAdvice {
 
     PencilPasswordEncoder withSecurityAdvice(boolean giveAdvice, LogSecurityAdvice securityAdvice);
 
-    PencilPasswordEncoder withSecurityAdvice(boolean giveAdvice) ;
+    default PencilPasswordEncoder withSecurityAdvice(boolean giveAdvice) {
+        return withSecurityAdvice(giveAdvice, DEFAULT_SECURITY_ADVICE);
+    }
 }
