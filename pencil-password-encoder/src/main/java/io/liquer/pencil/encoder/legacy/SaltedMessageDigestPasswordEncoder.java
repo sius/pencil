@@ -97,11 +97,6 @@ abstract class SaltedMessageDigestPasswordEncoder implements PencilPasswordEncod
     return iterations;
   }
 
-  @Override
-  public String sanitizeEncodingId(String encodingId) {
-    return null;
-  }
-
   /**
    * Prepend the default encodingId identifier.
    * Any brackets: {,},(,),[,] will be removed
