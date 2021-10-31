@@ -21,5 +21,5 @@ package io.liquer.pencil.encoder;
 import org.slf4j.Logger;
 
 @FunctionalInterface public interface LogSecurityAdvice {
-    void log(Logger log, PasswordHashInfo info);
+    void log(Logger log, PasswordEncoderInfo encoderInfo, PasswordHashInfo hashInfo);
 }

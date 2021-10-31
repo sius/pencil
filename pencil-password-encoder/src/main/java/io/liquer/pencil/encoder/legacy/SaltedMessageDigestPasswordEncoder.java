@@ -19,7 +19,6 @@
 package io.liquer.pencil.encoder.legacy;
 
 import io.liquer.pencil.encoder.LogSecurityAdvice;
-import io.liquer.pencil.encoder.PasswordHashInfo;
 import io.liquer.pencil.encoder.PencilPasswordEncoder;
 import io.liquer.pencil.encoder.support.Base64Support;
 import io.liquer.pencil.encoder.support.EPSplit;
@@ -28,7 +27,6 @@ import io.liquer.pencil.encoder.support.EncoderSupport;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,16 +41,6 @@ import org.springframework.security.crypto.keygen.KeyGenerators;
 abstract class SaltedMessageDigestPasswordEncoder implements PencilPasswordEncoder {
 
   private static Logger LOG = LoggerFactory.getLogger(SaltedMessageDigestPasswordEncoder.class);
-
-  private final static LogSecurityAdvice DEFAULT_SECURITY_ADVICE =
-      (logger, info) -> {
-        if (info.getSaltSize() < 8) {
-          logger.warn("Unsecure passwordHash algorithm {} or saltSize has been matched. " +
-                  "Update user password and passwordHash algorithm to meet current security standards!",
-              info.getEncodingId());
-        }
-      };
-
 
   public static final int DEFAULT_KEY_LENGTH = 8;
 
@@ -102,6 +90,16 @@ abstract class SaltedMessageDigestPasswordEncoder implements PencilPasswordEncod
     this.encodingId = null;
     this.giveSecurityAdvice = false;
     this.securityAdvice = DEFAULT_SECURITY_ADVICE;
+  }
+
+  @Override
+  public int getIterations() {
+    return iterations;
+  }
+
+  @Override
+  public String sanitizeEncodingId(String encodingId) {
+    return null;
   }
 
   /**
@@ -184,7 +182,7 @@ abstract class SaltedMessageDigestPasswordEncoder implements PencilPasswordEncod
     }
 
     if (giveSecurityAdvice) {
-      securityAdvice.log(LOG, split);
+      securityAdvice.log(LOG, this, split);
     }
 
     final byte[] challenge = sha(rawPassword, salt);

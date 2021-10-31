@@ -18,7 +18,7 @@
 
 package io.liquer.pencil.encoder.legacy;
 
-import io.liquer.pencil.EncodingIds;
+import io.liquer.pencil.encoder.EncodingIds;
 import io.liquer.pencil.encoder.PencilPasswordEncoder;
 import org.springframework.security.crypto.keygen.BytesKeyGenerator;
 import org.springframework.security.crypto.keygen.KeyGenerators;

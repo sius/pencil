@@ -21,5 +21,5 @@ package io.liquer.pencil.encoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public interface PencilPasswordEncoder
-    extends PasswordEncoder, WithIterations, WithEncodingId, WithSecurityAdvice {
+    extends PasswordEncoder, PasswordEncoderInfo, WithIterations, WithEncodingId, WithSecurityAdvice {
 }

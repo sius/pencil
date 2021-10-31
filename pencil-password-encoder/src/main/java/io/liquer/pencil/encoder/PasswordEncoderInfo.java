@@ -18,18 +18,7 @@
 
 package io.liquer.pencil.encoder;
 
-public interface WithSecurityAdvice {
+public interface PasswordEncoderInfo {
 
-    LogSecurityAdvice DEFAULT_SECURITY_ADVICE =
-        (logger, encoderInfo, hashInfo) -> {
-            if (hashInfo.getSaltSize() < 8) {
-                logger.warn("Unsecure passwordHash algorithm {} or saltSize has been matched. " +
-                        "Update user password and passwordHash algorithm to meet current security standards!",
-                    hashInfo.getEncodingId());
-            }
-        };
-
-    PencilPasswordEncoder withSecurityAdvice(boolean giveAdvice, LogSecurityAdvice securityAdvice);
-
-    PencilPasswordEncoder withSecurityAdvice(boolean giveAdvice) ;
+    int getIterations();
 }

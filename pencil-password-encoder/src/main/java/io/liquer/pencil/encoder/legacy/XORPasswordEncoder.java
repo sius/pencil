@@ -18,13 +18,15 @@
 
 package io.liquer.pencil.encoder.legacy;
 
-import io.liquer.pencil.EncodingIds;
+import io.liquer.pencil.encoder.EncodingIds;
 import io.liquer.pencil.encoder.LogSecurityAdvice;
 import io.liquer.pencil.encoder.PencilPasswordEncoder;
 import io.liquer.pencil.encoder.support.Base64Support;
 import io.liquer.pencil.encoder.support.EPSplit;
 
 import io.liquer.pencil.encoder.support.EncoderSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -38,10 +40,13 @@ import java.security.MessageDigest;
  */
 public final class XORPasswordEncoder implements PencilPasswordEncoder {
 
+  private static Logger LOG = LoggerFactory.getLogger(XORPasswordEncoder.class);
+
   /**
    * WebSphere default Key: "_".
    */
   public static final String DEFAULT_UNREPEATED_KEY = "_";
+
 
   private final CharSequence unrepeatedKey;
   private final boolean ufSafe;
@@ -50,6 +55,8 @@ public final class XORPasswordEncoder implements PencilPasswordEncoder {
 
   private String encodingId;
   private int iterations;
+  private boolean giveSecurityAdvice;
+  private LogSecurityAdvice securityAdvice;
 
   /**
    * Create an additive XOR Cipher PasswordEncoder
@@ -115,6 +122,8 @@ public final class XORPasswordEncoder implements PencilPasswordEncoder {
     this.iterations = Math.max(1, iterations);
     this.ufSafe = ufSafe;
     this.noPadding = noPadding;
+    this.giveSecurityAdvice = false;
+    this.securityAdvice = DEFAULT_SECURITY_ADVICE;
   }
 
   /**
@@ -144,6 +153,10 @@ public final class XORPasswordEncoder implements PencilPasswordEncoder {
     }
 
     final EPSplit split = new EPSplit(encodedPassword, 0);
+
+    if (giveSecurityAdvice) {
+      securityAdvice.log(LOG, this, split);
+    }
 
     final byte[] challenge =  xor(rawPassword, unrepeatedKey);
 
@@ -187,11 +200,18 @@ public final class XORPasswordEncoder implements PencilPasswordEncoder {
 
   @Override
   public PencilPasswordEncoder withSecurityAdvice(boolean giveAdvice, LogSecurityAdvice securityAdvice) {
-    return null;
+    this.giveSecurityAdvice = giveAdvice;
+    this.securityAdvice = securityAdvice == null ? DEFAULT_SECURITY_ADVICE : securityAdvice;
+    return this;
   }
 
   @Override
   public PencilPasswordEncoder withSecurityAdvice(boolean giveAdvice) {
-    return null;
+    return withSecurityAdvice(giveAdvice, DEFAULT_SECURITY_ADVICE);
+  }
+
+  @Override
+  public int getIterations() {
+    return iterations;
   }
 }
