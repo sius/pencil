@@ -73,11 +73,11 @@ public final class PencilPasswordEncoderFactory {
     final int iterations = 1;
     final BytesKeyGenerator saltGenerator =
         KeyGenerators.secureRandom(pencilProperties.getSaltSize());
-
+    final boolean advice = pencilProperties.isWithSecurityAdvice();
     final PasswordEncoder ssha = new SSHAPasswordEncoder(
         saltGenerator, iterations,
         pencilProperties.isUfSafe(),
-        pencilProperties.isNoPadding());
+        pencilProperties.isNoPadding()).withSecurityAdvice(advice);
     encoders.put(SSHA, ssha);
     encoders.put(SSHA1, ssha);
     encoders.put(SSHA_1, ssha);
@@ -85,14 +85,14 @@ public final class PencilPasswordEncoderFactory {
     final PasswordEncoder ssha224 = new SSHA224PasswordEncoder(
         saltGenerator, iterations,
         pencilProperties.isUfSafe(),
-        pencilProperties.isNoPadding());
+        pencilProperties.isNoPadding()).withSecurityAdvice(advice);
     encoders.put(SSHA224, ssha224);
     encoders.put(SSHA_224, ssha224);
 
     final PasswordEncoder ssha256 = new SSHA256PasswordEncoder(
           saltGenerator, iterations,
           pencilProperties.isUfSafe(),
-          pencilProperties.isNoPadding());
+          pencilProperties.isNoPadding()).withSecurityAdvice(advice);
     encoders.put(SSHA256, ssha256);
     encoders.put(SSHA_256, ssha256);
 
@@ -106,7 +106,7 @@ public final class PencilPasswordEncoderFactory {
     final PasswordEncoder ssha512 = new SSHA512PasswordEncoder(
             saltGenerator, iterations,
             pencilProperties.isUfSafe(),
-            pencilProperties.isNoPadding());
+            pencilProperties.isNoPadding()).withSecurityAdvice(advice);
     encoders.put(SSHA512, ssha512);
     encoders.put(SSHA_512, ssha512);
 
@@ -119,7 +119,7 @@ public final class PencilPasswordEncoderFactory {
       final PasswordEncoder ldap = new SSHAPasswordEncoder(
           unsaltedGenerator, iterations,
           pencilProperties.isUfSafe(),
-          pencilProperties.isNoPadding());
+          pencilProperties.isNoPadding()).withSecurityAdvice(advice);
       encoders.put(LDAP, ldap);
       encoders.put(SHA, ldap);
       encoders.put(SHA1, ldap);
@@ -128,30 +128,30 @@ public final class PencilPasswordEncoderFactory {
       final PasswordEncoder sha224 = new SSHA224PasswordEncoder(
           unsaltedGenerator, iterations,
           pencilProperties.isUfSafe(),
-          pencilProperties.isNoPadding());
+          pencilProperties.isNoPadding()).withSecurityAdvice(advice);
       encoders.put(SHA224, sha224);
       encoders.put(SHA_224, sha224);
 
       final PasswordEncoder sha256 = new SSHA256PasswordEncoder(
           unsaltedGenerator, iterations,
           pencilProperties.isUfSafe(),
-          pencilProperties.isNoPadding());
+          pencilProperties.isNoPadding()).withSecurityAdvice(advice);
       encoders.put(SHA256, sha256);
       encoders.put(SHA_256, sha256);
 
       final PasswordEncoder sha384 = new SSHA384PasswordEncoder(
           unsaltedGenerator, iterations,
           pencilProperties.isUfSafe(),
-          pencilProperties.isNoPadding());
+          pencilProperties.isNoPadding()).withSecurityAdvice(advice);
       encoders.put(SHA384, sha384);
       encoders.put(SHA_384, sha384);
 
       final PasswordEncoder sha512 = new SSHA512PasswordEncoder(
           unsaltedGenerator, iterations,
           pencilProperties.isUfSafe(),
-          pencilProperties.isNoPadding());
-      encoders.put(SHA512, ssha512);
-      encoders.put(SHA_512, ssha512);
+          pencilProperties.isNoPadding()).withSecurityAdvice(advice);
+      encoders.put(SHA512, sha512);
+      encoders.put(SHA_512, sha512);
     }
 
 

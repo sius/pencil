@@ -82,7 +82,8 @@ liquer:
     uf-safe: false # Whether to base64 encode password hashes URL and file safe. (default: false)
     no-padding: false # Whether to base64 encode password hashes without padding. (default: false)
     salt-size: 8 # The salt size in bytes. (default: 8)
-    allow-unsalted-passwords: true
+    allow-unsalted-passwords: true (default: true)
+    with-security-advice: true (default: false)
 ```
 
 ## Create a customized DelegatingPasswordEncoder

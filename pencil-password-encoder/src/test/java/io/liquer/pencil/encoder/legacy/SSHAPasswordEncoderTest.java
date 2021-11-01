@@ -93,16 +93,15 @@ public class SSHAPasswordEncoderTest {
   @Test
   @SuppressWarnings("deprecation")
   void matches_withNullFails() {
-    final CharSequence rawPassword = null;
     final PasswordEncoder sshaEncoder = new SSHAPasswordEncoder().withEncodingId();
     final PasswordEncoder ldapEncoder = new LdapShaPasswordEncoder();
 
-    final String encoded = sshaEncoder.encode(rawPassword);
+    final String encoded = sshaEncoder.encode(null);
     log(encoded);
-    assertFalse(sshaEncoder.matches(rawPassword, encoded));
-    assertThrows(NullPointerException.class, () -> ldapEncoder.matches(rawPassword, encoded));
+    assertFalse(sshaEncoder.matches(null, encoded));
+    assertThrows(NullPointerException.class, () -> ldapEncoder.matches(null, encoded));
 
-    assertThrows(NullPointerException.class, () -> ldapEncoder.encode(rawPassword));
+    assertThrows(NullPointerException.class, () -> ldapEncoder.encode(null));
   }
 
 

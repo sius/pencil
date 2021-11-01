@@ -209,4 +209,9 @@ public final class XORPasswordEncoder implements PencilPasswordEncoder {
   public int getIterations() {
     return iterations;
   }
+
+  @Override
+  public String getAlgorithm() {
+    return "xor";
+  }
 }

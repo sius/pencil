@@ -23,9 +23,9 @@ public interface WithSecurityAdvice {
     LogSecurityAdvice DEFAULT_SECURITY_ADVICE =
         (logger, encoderInfo, hashInfo) -> {
             if (hashInfo.getSaltSize() < 8) {
-                logger.warn("Unsecure passwordHash algorithm {} or saltSize has been matched. " +
+                logger.warn("Unsecure passwordHash algorithm {} with saltSize {} has been matched. " +
                         "Update user password and passwordHash algorithm to meet current security standards!",
-                    hashInfo.getEncodingId());
+                    encoderInfo.getAlgorithm(), hashInfo.getSaltSize());
             }
         };
 

@@ -69,7 +69,7 @@ public class PencilProperties {
    * password hash has been matched.
    * (default: false)
    */
-  private boolean securityAdvice = false;
+  private boolean withSecurityAdvice = false;
 
   public boolean isEnabled() {
     return enabled;
@@ -118,10 +118,10 @@ public class PencilProperties {
   public void setAllowUnsaltedPasswords(boolean allowUnsaltedPasswords) {
     this.allowUnsaltedPasswords = allowUnsaltedPasswords;
   }
-  public boolean isSecurityAdvice() {
-    return securityAdvice;
+  public boolean isWithSecurityAdvice() {
+    return withSecurityAdvice;
   }
-  public void setSecurityAdvice(boolean securityAdvice) {
-    this.securityAdvice = securityAdvice;
+  public void setWithSecurityAdvice(boolean withSecurityAdvice) {
+    this.withSecurityAdvice = withSecurityAdvice;
   }
 }

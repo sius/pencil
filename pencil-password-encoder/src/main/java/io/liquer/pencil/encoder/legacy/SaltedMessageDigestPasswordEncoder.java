@@ -40,7 +40,7 @@ import org.springframework.security.crypto.keygen.KeyGenerators;
  */
 abstract class SaltedMessageDigestPasswordEncoder implements PencilPasswordEncoder {
 
-  private static Logger LOG = LoggerFactory.getLogger(SaltedMessageDigestPasswordEncoder.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SaltedMessageDigestPasswordEncoder.class);
 
   public static final int DEFAULT_KEY_LENGTH = 8;
 
@@ -97,6 +97,16 @@ abstract class SaltedMessageDigestPasswordEncoder implements PencilPasswordEncod
     return iterations;
   }
 
+  @Override
+  public int getHashSize() {
+    return hashSize;
+  }
+
+  @Override
+  public String getAlgorithm() {
+    return algorithm;
+  }
+
   /**
    * Prepend the default encodingId identifier.
    * Any brackets: {,},(,),[,] will be removed
@@ -116,7 +126,7 @@ abstract class SaltedMessageDigestPasswordEncoder implements PencilPasswordEncod
    * because some deprecated <code>PasswordEncoders</code>> prepend an encodingId identifier,
    * (e.g.: LdapShaPasswordEncoder)
    *
-   * @param encodingId
+   * @param encodingId the algorithm encoding id
    * @return this <code>PasswordEncoder</code>
    */
   @Override

@@ -20,5 +20,22 @@ package io.liquer.pencil.encoder;
 
 public interface PasswordEncoderInfo {
 
+    /**
+     * Get the iteration value of how many times
+     * the encoding algorithm will be applied.
+     *
+     * @return the iterations value
+     */
     int getIterations();
+
+    /**
+     * Get the hash size of the calculated password (without salt) or
+     * -1 if the algorithm has no defined hash size (e.g.: xor).
+     *
+     * @return the hash size of the calculated password (without salt) or
+     *          -1 if the algorithm has no defined hash size (e.g.: xor)
+     */
+    default int getHashSize() { return -1; }
+
+    String getAlgorithm();
 }
