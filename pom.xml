@@ -112,7 +112,7 @@
     <version.jul-to-slf4j>1.7.26</version.jul-to-slf4j>
     <version.junit-jupiter>5.5.2</version.junit-jupiter>
     <version.junit-platform-launcher>1.5.2</version.junit-platform-launcher>
-    <version.logback-classic>1.2.3</version.logback-classic>
+    <version.logback-classic>1.2.13</version.logback-classic>
     <version.snakeyaml>1.32</version.snakeyaml>
     <version.spring-boot-starter-parent>2.2.4.RELEASE</version.spring-boot-starter-parent>
 
